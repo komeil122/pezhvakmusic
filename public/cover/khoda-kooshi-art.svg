@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Khoda Kooshi original cover art</title>
+  <desc id="desc">A solitary figure surrounded by white flowing thought lines</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="70%"><stop stop-color="#1d1f20"/><stop offset=".62" stop-color="#08090a"/><stop offset="1" stop-color="#020202"/></radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <g fill="none" stroke="#f2f3f2" stroke-opacity=".68" stroke-width="1.4">
+    <ellipse cx="500" cy="610" rx="520" ry="170" transform="rotate(-7 500 610)"/>
+    <ellipse cx="500" cy="610" rx="475" ry="135" transform="rotate(9 500 610)"/>
+    <ellipse cx="500" cy="610" rx="410" ry="105" transform="rotate(-15 500 610)"/>
+    <ellipse cx="500" cy="610" rx="350" ry="78" transform="rotate(13 500 610)"/>
+    <path d="M-30 710C220 595 290 520 500 590S790 730 1030 555M-40 770C225 650 320 565 515 620S805 790 1040 625M0 560C260 480 345 515 500 555S760 650 1010 505"/>
+    <path d="M40 830C250 650 370 675 500 700S760 760 980 650M20 465C255 425 365 475 500 520S755 555 975 430"/>
+  </g>
+  <g stroke="#ffffff" stroke-opacity=".45" stroke-width="1">
+    <path d="M58 770L160 620M118 850L235 645M215 870L300 670M760 825L700 665M875 775L745 635M945 690L790 595"/>
+    <path d="M64 350V540M104 330V490M155 310V465M840 315V485M885 340V520M930 360V545"/>
+  </g>
+  <circle cx="500" cy="560" r="54" fill="#090a0a" stroke="#bfc3c2" stroke-opacity=".6" stroke-width="2"/>
+  <g fill="#f4f5f4" opacity=".8"><circle cx="68" cy="387" r="3"/><circle cx="168" cy="445" r="3"/><circle cx="290" cy="390" r="2"/><circle cx="710" cy="370" r="3"/><circle cx="870" cy="430" r="2"/><circle cx="930" cy="510" r="3"/></g>
+  <path d="M340 735c-25-44-23-91-12-130 8-28 18-53 15-82-3-25 8-43 28-45 19-2 34 14 35 37 2 25 0 48 13 63 15 16 29 25 37 44 11 25-9 58-28 77l-11 36z" fill="#030303" stroke="#e4e5e4" stroke-opacity=".65" stroke-width="2"/>
+  <path d="M390 688c39 12 71 24 96 22 22-2 39-15 57-25" fill="none" stroke="#050505" stroke-width="28"/>
+  <text x="500" y="930" fill="#e8e9e8" font-family="Georgia, serif" font-size="27" letter-spacing="8" text-anchor="middle">KHODA KOOSHI</text>
+</svg>

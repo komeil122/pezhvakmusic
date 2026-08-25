@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">12 34 original cover art</title>
+  <desc id="desc">A luminous digital profile made from silver particles and circuitry</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#151719"/><stop offset=".5" stop-color="#050607"/><stop offset="1" stop-color="#000000"/></linearGradient>
+    <radialGradient id="light"><stop stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#8d99a3" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <ellipse cx="620" cy="445" rx="280" ry="310" fill="url(#light)" opacity=".16" filter="url(#blur)"/>
+  <g fill="none" stroke="#dfe5e8" stroke-opacity=".65" stroke-width="2">
+    <path d="M70 285H280l95 90M45 350h245l72 70M20 420h300l40 30M55 620h230l75-80M35 690h280l76-92M80 760h245l82-115"/>
+    <path d="M105 285v-62M155 285v-95M205 285v-55M112 760v70M165 760v92M220 760v55"/>
+  </g>
+  <path d="M370 330c52-110 175-164 290-113 100 44 150 138 117 232-20 58-7 101 34 153-58 13-102 2-139-23-56 58-131 77-203 39-84-45-132-158-99-288z" fill="#090a0c" stroke="#8f9aa3" stroke-opacity=".45" stroke-width="3"/>
+  <path d="M438 343c66-82 170-92 231-32 45 45 42 105 1 142-26 24-32 49-20 81-45 36-105 42-151 8-63-46-91-130-61-199z" fill="none" stroke="#eef2f2" stroke-opacity=".7" stroke-width="3"/>
+  <path d="M520 344c-42 34-51 75-36 115 12 33 38 51 79 52 35 1 59-18 73-43-25 5-50-7-64-31-17-29-13-62 12-91z" fill="#020304" stroke="#dce2e4" stroke-opacity=".6" stroke-width="2"/>
+  <path d="M588 500c-8 28 9 52 40 67 26 13 50 14 74 9" fill="none" stroke="#edf0f0" stroke-opacity=".75" stroke-width="4"/>
+  <g fill="#f0f3f3"><circle cx="420" cy="340" r="5"/><circle cx="460" cy="310" r="4"/><circle cx="510" cy="290" r="3"/><circle cx="570" cy="286" r="5"/><circle cx="635" cy="315" r="3"/><circle cx="690" cy="360" r="4"/><circle cx="735" cy="430" r="3"/><circle cx="696" cy="600" r="4"/><circle cx="630" cy="655" r="3"/></g>
+  <g fill="#bfc8ce" opacity=".55"><circle cx="395" cy="390" r="2"/><circle cx="430" cy="430" r="3"/><circle cx="447" cy="500" r="2"/><circle cx="480" cy="590" r="3"/><circle cx="548" cy="620" r="2"/><circle cx="666" cy="570" r="3"/><circle cx="710" cy="515" r="2"/></g>
+  <text x="500" y="900" fill="#edf0f0" font-family="Arial, sans-serif" font-size="76" font-weight="700" letter-spacing="20" text-anchor="middle">12 34</text>
+  <text x="500" y="945" fill="#89939a" font-family="Arial, sans-serif" font-size="14" letter-spacing="7" text-anchor="middle">POOBON / PEZHVAK</text>
+</svg>

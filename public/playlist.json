@@ -1,0 +1,498 @@
+[
+  {
+    "id": "khoda-kooshi",
+    "title": "Khoda Kooshi",
+    "artist": "Mehrad Hidden",
+    "album": "Official Track",
+    "cover": "/cover/reference-cover-01.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/KhodaKooshi%20(Ft.%20Mehrad%20Hidden)%20OFFICIAL%20TRACK.m4a"
+  },
+  {
+    "id": "poobon-12-34",
+    "title": "12 34",
+    "artist": "Poobon",
+    "album": "Supabase Test Track",
+    "cover": "/cover/reference-cover-02.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/12%2034%20%20%20Poobon.mp3"
+  },
+  {
+    "id": "hesse-mamooli-140",
+    "title": "Hesse Mamooli 140",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-03.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/1683445241940534346Hesse_Mamooli-140_-_audio_only_medium.m4a"
+  },
+  {
+    "id": "17079515421418702783",
+    "title": "17079515421418702783",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-04.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/17079515421418702783.mp3"
+  },
+  {
+    "id": "171847749",
+    "title": "171847749",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-05.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/171847749.m4a"
+  },
+  {
+    "id": "tamume-chifpi",
+    "title": "TAMUME",
+    "artist": "Chifpi & Ashkan Kagan",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-06.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/1_1%20-%20TAMUME%20-%20Chifpi%20%20Ashkan%20Kagan%20(320).mp3"
+  },
+  {
+    "id": "29",
+    "title": "29",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-07.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/29.m4a"
+  },
+  {
+    "id": "369668252",
+    "title": "369668252",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-08.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/369668252.m4a"
+  },
+  {
+    "id": "41813315",
+    "title": "41813315",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-09.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/41813315.m4a"
+  },
+  {
+    "id": "43162e5b-4419-44ef-b782-3955b1727b49na-140",
+    "title": "NA 140",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-10.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/43162e5b_4419_44ef_b782_3955b1727b49NA_140_audio_only_medium.m4a"
+  },
+  {
+    "id": "63506903-2138-446d-a505-b39e9677b762",
+    "title": "63506903",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-11.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/63506903-2138-446d-a505-b39e9677b762.mp3"
+  },
+  {
+    "id": "675d51c4-bcd6-4c1c-aa88-65be1d67268e",
+    "title": "675d51c4",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/reference-cover-01.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/675d51c4-bcd6-4c1c-aa88-65be1d67268e.mp3"
+  },
+  {
+    "id": "vinak-khat",
+    "title": "Khat",
+    "artist": "Vinak",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/@Free_RapHipHop%20-%20Vinak%20-%20Khat.mp3"
+  },
+  {
+    "id": "koorosh-tamara-nashod-behet-begam",
+    "title": "Nashod Behet Begam",
+    "artist": "Koorosh & Tamara",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-signal-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/@HipHopFree%20-%20Nashod%20Behet%20Begam%20-%20Koorosh%20%20%20Tamara.mp3"
+  },
+  {
+    "id": "behzad-leito-cnjim-mese-man-nashod",
+    "title": "Mese Man Nashod",
+    "artist": "Behzad Leito & Cnjim",
+    "album": "Something Dead",
+    "cover": "/cover/hesse-mamooli-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/@RapiWar%20-%20Behzad%20Leito,%20Cnjim%20-%20Mese%20Man%20Nashod.mp3"
+  },
+  {
+    "id": "sijal-sogand-sepehr-khalse-leila",
+    "title": "Leila",
+    "artist": "Sijal, Sogand & Sepehr Khalse",
+    "album": "Something Dead",
+    "cover": "/cover/tamume-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/@RapRelease%20-%20Leila%20-%20Sijal,%20Sogand,%20Sepehr%20Khalse.mp3"
+  },
+  {
+    "id": "vinak-yadet-raft",
+    "title": "Yadet Raft",
+    "artist": "Vinak",
+    "album": "Something Dead",
+    "cover": "/cover/khoda-kooshi-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/@RapRelease%20-%20Yadet%20Raft%20-%20Vinak.mp3"
+  },
+  {
+    "id": "che-kardi",
+    "title": "Che Kardi",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/poobon-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/aa7ccb03_2bc4_428a_8d5c_4cd64ae57465Che_Kardi_140_audio_only_m.mp3"
+  },
+  {
+    "id": "adam-barfi",
+    "title": "Adam Barfi",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/ADAM%20BARFI.mp3"
+  },
+  {
+    "id": "age-farda-bi-man",
+    "title": "Age Farda Bi Man",
+    "artist": "Ben & Saeed Dehghan",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Age%20Farda%20Bi%20Man%20%20%20Ben%20%20%20Saeed%20Dehghan.mp3"
+  },
+  {
+    "id": "age-bere-hoomaan",
+    "title": "Age Bere",
+    "artist": "Hoomaan",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-signal-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/AGE_BERE_feat_Hoomaan_prod_by_Arman_Miladi_OFFICIAL_TRACK.m4a"
+  },
+  {
+    "id": "anxiety-tohi-poobon",
+    "title": "Anxiety",
+    "artist": "Tohi & Poobon",
+    "album": "Something Dead",
+    "cover": "/cover/hesse-mamooli-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Anxiety%20%20%20Tohi%20%20%20Poobon.mp3"
+  },
+  {
+    "id": "arez-break-up",
+    "title": "Break Up",
+    "artist": "Arez",
+    "album": "Something Dead",
+    "cover": "/cover/tamume-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Arez%20-%20Break%20up.mp3"
+  },
+  {
+    "id": "babre-zakhmi",
+    "title": "Babre Zakhmi",
+    "artist": "Shayan Yo",
+    "album": "Something Dead",
+    "cover": "/cover/khoda-kooshi-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Babre%20Zakhmi%20OFFICIAL%20TRACK%20%20%20Shayan%20Yo.m4a"
+  },
+  {
+    "id": "baroon",
+    "title": "Baroon",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/poobon-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Baroon.m4a"
+  },
+  {
+    "id": "begoo-toam-interlude",
+    "title": "Begoo Toam",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Begoo%20Toam%20(Interlude).m4a"
+  },
+  {
+    "id": "beynemoon-poobon",
+    "title": "Beynemoon",
+    "artist": "Ezza, Ealia & Poobon",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-signal-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Beynemoon%20(feat.%20Ezza%20%20%20Ealia)%20%20%20Poobon.m4a"
+  },
+  {
+    "id": "bi-liaqat",
+    "title": "Bi Liaqat",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Bi%20Liaqat.m4a"
+  },
+  {
+    "id": "bi-marefat-poobon",
+    "title": "Bi Marefat",
+    "artist": "Mr Kiarash, Behzad Leito & Poobon",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-signal-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Bi%20Marefat%20(feat.%20Mr%20Kiarash%20%20%20Behzad%20Leito)%20%20%20Poobon.m4a"
+  },
+  {
+    "id": "blood-moon",
+    "title": "Blood Moon",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/hesse-mamooli-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Blood%20Moon.m4a"
+  },
+  {
+    "id": "darlin",
+    "title": "Darlin",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/tamume-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Darlin.m4a"
+  },
+  {
+    "id": "ghatle-amd",
+    "title": "Ghatle AMD",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/khoda-kooshi-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Ghatle%20amd.m4a"
+  },
+  {
+    "id": "sher-yadom-ra",
+    "title": "Sher Yadom Ra",
+    "artist": "Siriya Ensemble",
+    "album": "The Slipped Poem",
+    "cover": "/cover/poobon-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Sher%20Yadom%20Ra%20(The%20Slipped%20Poem)%20%20%20Siriya%20Ensemble.m4a"
+  },
+  {
+    "id": "spotimp3-6902072f95b34",
+    "title": "spotimp3 6902072f95b34",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/spotimp3_6902072f95b34.mp3"
+  },
+  {
+    "id": "telegram-sadthc",
+    "title": "Telegram",
+    "artist": "Sadthc",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-signal-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Telegram%20@Sadthc.m4a"
+  },
+  {
+    "id": "tequila-hoomaan",
+    "title": "Tequila",
+    "artist": "Hoomaan",
+    "album": "Something Dead",
+    "cover": "/cover/hesse-mamooli-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Tequila%20(feat.%20Hoomaan).m4a"
+  },
+  {
+    "id": "saaghi-the-don-koorosh",
+    "title": "Saaghi",
+    "artist": "The Don & Koorosh",
+    "album": "Something Dead",
+    "cover": "/cover/tamume-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/The%20Don%20&%20Koorosh%20-%20Saaghi%20(320).mp3"
+  },
+  {
+    "id": "tigh-poobon",
+    "title": "Tigh",
+    "artist": "Poobon",
+    "album": "Something Dead",
+    "cover": "/cover/khoda-kooshi-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/Tigh%20%20%20Poobon.mp3"
+  },
+  {
+    "id": "to-kojayi",
+    "title": "To Kojayi",
+    "artist": "Unknown Artist",
+    "album": "Something Dead",
+    "cover": "/cover/poobon-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/To%20Kojayi.m4a"
+  },
+  {
+    "id": "to-rafti-eljaan-arash",
+    "title": "To Rafti",
+    "artist": "Eljaan Mohamadi & Arash Moradi Fard",
+    "album": "Something Dead",
+    "cover": "/cover/numbered-orbit-art.svg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/somthing%20dead%20playlist/To%20Rafti%20%20%20Eljaan%20Mohamadi%20Arash%20Moradi%20Fard.m4a"
+  },
+  {
+    "id": "ghol-bede-hamin-emshab-freestyle-hoomaan",
+    "title": "Ghol Bede Hamin Emshab (Freestyle)",
+    "artist": "Hoomaan",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-10.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@HipHopFree%20-%20ghol%20bede%20hamin%20emshab%20(freestyle)%20Hoomaan.mp3"
+  },
+  {
+    "id": "hiphopfree-archive",
+    "title": "HipHopFree Archive",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-11.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@HipHopiFreeArchive.mp3"
+  },
+  {
+    "id": "onlyfans",
+    "title": "OnlyFans",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-01.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/01%20OnlyFans.m4a"
+  },
+  {
+    "id": "isam-matinam-nameh-ii",
+    "title": "NAMEH II",
+    "artist": "Isam & Matinam",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-02.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/01.%20Isam,%20Matinam%20-%20NAMEH%20II.m4a"
+  },
+  {
+    "id": "hesse-mamooli-140-again",
+    "title": "Hesse Mamooli 140",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-03.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/1683445241940534346Hesse_Mamooli-140_-_audio_only_medium.m4a"
+  },
+  {
+    "id": "sob-4",
+    "title": "4 Sob",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-04.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/4%20Sob.m4a"
+  },
+  {
+    "id": "na-140-again",
+    "title": "NA 140",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-05.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/43162e5b_4419_44ef_b782_3955b1727b49NA_140_audio_only_medium.m4a"
+  },
+  {
+    "id": "four-5917983261895695985",
+    "title": "4_5917983261895695985",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-06.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/4_5917983261895695985.mp3"
+  },
+  {
+    "id": "havaliye-shab",
+    "title": "Havaliye Shab",
+    "artist": "Vinak",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-07.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@Free_RapHipHop%20-%20Vinak%20-%20Havaliye%20Shab.mp3"
+  },
+  {
+    "id": "farsh-qermez",
+    "title": "FARSH QERMEZ",
+    "artist": "Matin Fattahi",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-08.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@impvi%20-%20FARSH%20QERMEZ%20-%20Matin%20Fattahi.mp3"
+  },
+  {
+    "id": "gharibe-hiphopologist",
+    "title": "Gharibe",
+    "artist": "Hiphopologist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-09.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@impvi%20-%20Gharibe%20-%20Hiphopologist.mp3"
+  },
+  {
+    "id": "goor-hoomaan",
+    "title": "Goor",
+    "artist": "Hoomaan",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-10.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@RapRelease%20-%20Goor%20-%20Hoomaan.mp3"
+  },
+  {
+    "id": "tiffany-isam",
+    "title": "TIFFANY",
+    "artist": "Isam",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-11.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@RapRelease%20-%20TIFFANY%20-%20Isam.mp3"
+  },
+  {
+    "id": "yaadet-raft-again",
+    "title": "Yadet Raft",
+    "artist": "Vinak",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-01.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/@RapRelease%20-%20Yadet%20Raft%20-%20Vinak.mp3"
+  },
+  {
+    "id": "che-kardi-again",
+    "title": "Che Kardi",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-02.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/aa7ccb03_2bc4_428a_8d5c_4cd64ae57465Che_Kardi_140_audio_only_m.mp3"
+  },
+  {
+    "id": "baroon-again",
+    "title": "Baroon",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-03.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/Baroon.m4a"
+  },
+  {
+    "id": "d56c9b4f-a137-4ec9-9424-b5c1ddbc252f",
+    "title": "d56c9b4f-a137-4ec9-9424-b5c1ddbc252f",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-04.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/d56c9b4f-a137-4ec9-9424-b5c1ddbc252f.mp3"
+  },
+  {
+    "id": "musicsquad-org",
+    "title": "MusicsquadORG",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-05.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/MusicsquadORG.mp3"
+  },
+  {
+    "id": "nobate-mane-arianfar",
+    "title": "Nobate Mane",
+    "artist": "Arianfar",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-06.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/Nobate%20Mane%20%20%20Arianfar.mp3"
+  },
+  {
+    "id": "shab-man",
+    "title": "Shab Man",
+    "artist": "Unknown Artist",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-07.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/Shab%20man.m4a"
+  },
+  {
+    "id": "shak-chifpi",
+    "title": "Shak",
+    "artist": "Chifpi",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-08.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/Shak%20%20%20Chifpi.mp3"
+  },
+  {
+    "id": "shakhe-gol-hoomaan",
+    "title": "ShakheGol (feat. Arown)",
+    "artist": "Hoomaan",
+    "album": "Something Dead Again",
+    "cover": "/cover/reference-cover-09.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20again/ShakheGol%20(feat.%20Arown)%20%20%20Hoomaan.m4a"
+  }
+]
