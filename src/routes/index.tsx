@@ -1371,13 +1371,13 @@ function PezhvakMusic() {
                         </span>
                       </div>
                       <div className="p-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <button onClick={() => selectTrack(t)} className="min-w-0 text-left">
-                            <p className="truncate text-sm">{t.title}</p>
-                            <p className="truncate text-xs text-muted-foreground">
-                              {t.artist} · {t.album}
-                            </p>
-                          </button>
+                        <button onClick={() => selectTrack(t)} className="block w-full text-center">
+                          <p className="truncate text-sm">{t.title}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {t.artist} · {t.album}
+                          </p>
+                        </button>
+                        <div className="mt-3 flex items-center justify-center gap-2">
                           <button
                             onClick={(event) => {
                               event.stopPropagation();
