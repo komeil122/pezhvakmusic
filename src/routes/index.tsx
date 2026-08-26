@@ -132,6 +132,7 @@ function PezhvakMusic() {
   const [muted, setMuted] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
+  const [nextTrackId, setNextTrackId] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>(["khooneye-man"]);
   const [recentTrackIds, setRecentTrackIds] = useState<string[]>([]);
   const [navOpen, setNavOpen] = useState(false);
@@ -333,7 +334,13 @@ function PezhvakMusic() {
         void audio.play();
         return;
       }
-      setIndex((i) => (i + 1) % tracks.length);
+      setIndex((i) => {
+        const queuedIndex = nextTrackId
+          ? tracks.findIndex((track) => track.id === nextTrackId)
+          : -1;
+        return queuedIndex >= 0 ? queuedIndex : (i + 1) % tracks.length;
+      });
+      setNextTrackId(null);
       setProgress(0);
     };
 
@@ -358,7 +365,7 @@ function PezhvakMusic() {
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("canplay", handleCanPlay);
     };
-  }, [current?.id, playing, repeat, tracks.length]);
+  }, [current?.id, nextTrackId, playing, repeat, tracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -513,7 +520,12 @@ function PezhvakMusic() {
     setTrackDuration(0);
     setProgress(0);
     setPlaying(true);
+    setNextTrackId(null);
     setRecentTrackIds((recent) => [t.id, ...recent.filter((id) => id !== t.id)].slice(0, 12));
+  };
+
+  const queueTrackNext = (track: Track) => {
+    if (track.id !== current?.id) setNextTrackId(track.id);
   };
 
   const openPlaylist = (playlist: PlaylistCard) => {
@@ -1378,13 +1390,18 @@ function PezhvakMusic() {
                           <button
                             onClick={(event) => {
                               event.stopPropagation();
-                              selectTrack(t);
+                              queueTrackNext(t);
                             }}
-                            aria-label={`Play ${t.title}`}
-                            title="Play"
-                            className="grid size-8 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary text-primary-foreground hover:border-primary"
+                            aria-label={`Play ${t.title} next`}
+                            title={nextTrackId === t.id ? "Next track selected" : "Play next"}
+                            aria-pressed={nextTrackId === t.id}
+                            className={`grid size-8 shrink-0 place-items-center rounded-full border text-muted-foreground hover:border-primary/40 hover:text-primary ${
+                              nextTrackId === t.id
+                                ? "border-primary/50 bg-primary/10 text-primary"
+                                : "border-border"
+                            }`}
                           >
-                            <Play size={14} />
+                            <SkipForward size={14} />
                           </button>
                           <button
                             onClick={(event) => {
@@ -1396,6 +1413,17 @@ function PezhvakMusic() {
                             className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                           >
                             <Plus size={14} />
+                          </button>
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              selectTrack(t);
+                            }}
+                            aria-label={`Play ${t.title}`}
+                            title="Play"
+                            className="grid size-8 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary text-primary-foreground hover:border-primary"
+                          >
+                            <Play size={14} />
                           </button>
                           <button
                             onClick={(event) => {
