@@ -255,7 +255,12 @@ function PezhvakMusic() {
             .map((track, index) => ({
               ...track,
               cover: referenceCovers[index % referenceCovers.length],
-            }));
+            }))
+            .sort((firstTrack, secondTrack) => {
+              const firstIsDrive = firstTrack.id.startsWith("drive-") ? 1 : 0;
+              const secondIsDrive = secondTrack.id.startsWith("drive-") ? 1 : 0;
+              return firstIsDrive - secondIsDrive;
+            });
           const savedManualTracks = JSON.parse(
             window.localStorage.getItem("pezhvak-manual-tracks") ?? "[]",
           );
@@ -395,7 +400,7 @@ function PezhvakMusic() {
 
   useEffect(() => {
     const preloadAudio = preloadAudioRef.current;
-    if (!preloadAudio || !nextTrack?.src) return;
+    if (!preloadAudio || !nextTrack?.src || nextTrack.src.includes("drive.google.com")) return;
 
     if (preloadAudio.getAttribute("src") !== nextTrack.src) {
       preloadAudio.src = nextTrack.src;
@@ -867,8 +872,8 @@ function PezhvakMusic() {
 
   return (
     <div className="music-shell min-h-screen overflow-x-hidden bg-background text-foreground">
-      <audio ref={audioRef} preload="auto" crossOrigin="anonymous" playsInline />
-      <audio ref={preloadAudioRef} preload="auto" crossOrigin="anonymous" playsInline />
+      <audio ref={audioRef} preload="metadata" playsInline />
+      <audio ref={preloadAudioRef} preload="none" playsInline />
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar transition-transform lg:translate-x-0 ${
