@@ -168,6 +168,54 @@ function PezhvakMusic() {
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
+  const soundContextRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    const handleButtonSound = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const button = target?.closest("button");
+      if (
+        !button ||
+        button.disabled ||
+        button.getAttribute("aria-label")?.startsWith("Close") ||
+        button.querySelector('input[type="range"]')
+      ) {
+        return;
+      }
+
+      const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      const context = soundContextRef.current ?? new AudioContextClass();
+      soundContextRef.current = context;
+      void context.resume();
+
+      const isPrimary = button.className.includes("bg-primary");
+      const isToggle = button.getAttribute("aria-pressed") !== null;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const now = context.currentTime;
+      const frequency = isPrimary ? 660 : isToggle ? 520 : 420;
+
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(frequency, now);
+      oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.82, now + 0.06);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.035, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.08);
+    };
+
+    document.addEventListener("click", handleButtonSound);
+    return () => {
+      document.removeEventListener("click", handleButtonSound);
+      void soundContextRef.current?.close();
+      soundContextRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1032,6 +1080,73 @@ function PezhvakMusic() {
                   />
                 </button>
               ))}
+            </div>
+
+            <div className="mt-5 border-t border-border pt-5">
+              <div className="mb-3 flex items-center justify-between">
+                <div>
+                  <p className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
+                    Playback
+                  </p>
+                  <p className="mt-1 text-sm text-foreground">Listening controls</p>
+                </div>
+                <AudioLines size={18} className="text-primary" />
+              </div>
+
+              <div className="mb-4 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMuted((value) => !value)}
+                  aria-pressed={muted}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                  {muted ? "Muted" : "Sound on"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShuffle((value) => !value)}
+                  aria-pressed={shuffle}
+                  className={`flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors ${
+                    shuffle
+                      ? "border-primary/50 bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                  }`}
+                >
+                  <Shuffle size={15} /> Shuffle
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRepeat((value) => !value)}
+                  aria-pressed={repeat}
+                  className={`flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors ${
+                    repeat
+                      ? "border-primary/50 bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                  }`}
+                >
+                  <Repeat size={15} /> Repeat
+                </button>
+              </div>
+
+              <label className="flex items-center gap-3 text-xs text-muted-foreground">
+                <Volume2 size={15} className="shrink-0 text-primary" />
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={muted ? 0 : volume}
+                  onChange={(event) => {
+                    const nextVolume = Number(event.target.value);
+                    setMuted(nextVolume === 0);
+                    setVolume(nextVolume);
+                    if (audioRef.current) audioRef.current.volume = nextVolume / 100;
+                  }}
+                  aria-label="Settings volume"
+                  className="w-full accent-primary"
+                />
+                <span className="w-8 text-right tabular-nums">{muted ? 0 : volume}%</span>
+              </label>
             </div>
           </div>
         </>
