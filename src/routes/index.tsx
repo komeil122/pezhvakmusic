@@ -1366,9 +1366,6 @@ function PezhvakMusic() {
                           height={768}
                           className="music-cover size-full object-cover transition-transform group-hover:scale-105"
                         />
-                        <span className="absolute bottom-2 right-2 grid size-9 place-items-center rounded-full bg-primary text-primary-foreground opacity-0 transition-opacity group-hover:opacity-100">
-                          <Play size={15} />
-                        </span>
                       </div>
                       <div className="p-3">
                         <button onClick={() => selectTrack(t)} className="block w-full text-center">
@@ -1378,6 +1375,17 @@ function PezhvakMusic() {
                           </p>
                         </button>
                         <div className="mt-3 flex items-center justify-center gap-2">
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              selectTrack(t);
+                            }}
+                            aria-label={`Play ${t.title}`}
+                            title="Play"
+                            className="grid size-8 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary text-primary-foreground hover:border-primary"
+                          >
+                            <Play size={14} />
+                          </button>
                           <button
                             onClick={(event) => {
                               event.stopPropagation();
