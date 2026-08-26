@@ -442,7 +442,7 @@ function PezhvakMusic() {
       mood === "favorites"
         ? matchingTracks.filter((track) => favorites.includes(track.id))
         : mood === "long-form"
-          ? matchingTracks.filter((track) => (track.duration ?? 0) >= 240)
+          ? matchingTracks.filter((track) => (track.duration ?? 0) > 300)
           : mood === "late-night"
             ? matchingTracks.filter((track) =>
                 /night|moon|dark|dream|alone|sleep/i.test(`${track.title} ${track.album}`),
@@ -1266,6 +1266,7 @@ function PezhvakMusic() {
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <ListeningStat icon={Music2} value={tracks.length} label="Tracks" />
                 <ListeningStat icon={Heart} value={favorites.length} label="Favorites" />
+                <ListeningStat icon={ListMusic} value={playlists.length} label="Playlists" />
               </div>
             </div>
           </section>
@@ -1279,7 +1280,6 @@ function PezhvakMusic() {
                 ["all", "All tracks"],
                 ["late-night", "Late night"],
                 ["favorites", "Favorites"],
-                ["long-form", "Long form"],
               ] as const
             ).map(([value, label]) => (
               <button
@@ -1399,7 +1399,7 @@ function PezhvakMusic() {
                             {t.artist} · {t.album}
                           </p>
                         </button>
-                        <div className="mt-3 flex items-center justify-center gap-2">
+                        <div className="mt-3 flex items-center justify-center gap-1">
                           <button
                             onClick={(event) => {
                               event.stopPropagation();
@@ -1408,13 +1408,13 @@ function PezhvakMusic() {
                             aria-label={`Play ${t.title} next`}
                             title={nextTrackId === t.id ? "Next track selected" : "Play next"}
                             aria-pressed={nextTrackId === t.id}
-                            className={`grid size-8 shrink-0 place-items-center rounded-full border text-muted-foreground hover:border-primary/40 hover:text-primary ${
+                            className={`grid size-6 shrink-0 place-items-center rounded-full border text-muted-foreground hover:border-primary/40 hover:text-primary ${
                               nextTrackId === t.id
                                 ? "border-primary/50 bg-primary/10 text-primary"
                                 : "border-border"
                             }`}
                           >
-                            <SkipForward size={14} />
+                            <SkipForward size={12} />
                           </button>
                           <button
                             onClick={(event) => {
@@ -1423,9 +1423,9 @@ function PezhvakMusic() {
                             }}
                             aria-label={`Add ${t.title} to playlist`}
                             title="Add to playlist"
-                            className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
+                            className="grid size-6 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                           >
-                            <Plus size={14} />
+                            <Plus size={12} />
                           </button>
                           <button
                             onClick={(event) => {
@@ -1434,9 +1434,9 @@ function PezhvakMusic() {
                             }}
                             aria-label={`Play ${t.title}`}
                             title="Play"
-                            className="grid size-8 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary text-primary-foreground hover:border-primary"
+                            className="grid size-6 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary text-primary-foreground hover:border-primary"
                           >
-                            <Play size={14} />
+                            <Play size={12} />
                           </button>
                           <button
                             onClick={(event) => {
@@ -1454,10 +1454,10 @@ function PezhvakMusic() {
                                 ? "Remove from favorites"
                                 : "Add to favorites"
                             }
-                            className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
+                            className="grid size-6 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                           >
                             <Heart
-                              size={14}
+                              size={12}
                               className={
                                 favorites.includes(t.id) ? "fill-primary text-primary" : ""
                               }
@@ -1471,9 +1471,9 @@ function PezhvakMusic() {
                             aria-label={`Save ${t.title} for offline listening`}
                             title="Save for offline listening"
                             disabled={downloadingTrackId === t.id}
-                            className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+                            className="grid size-6 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
                           >
-                            <Download size={14} />
+                            <Download size={12} />
                           </button>
                         </div>
                       </div>
