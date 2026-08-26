@@ -600,6 +600,18 @@ function PezhvakMusic() {
     setOpenArtistName(null);
     setSection(name);
     setLibraryFilter(name === "Favorites" ? "favorites" : "all");
+    if (name === "My Library" || name === "Favorites") {
+      setExpandedSections((currentSections) => ({
+        ...currentSections,
+        "Recently Played": true,
+      }));
+    }
+    if (name === "Playlists") {
+      setExpandedSections((currentSections) => ({
+        ...currentSections,
+        "Your Playlists": true,
+      }));
+    }
     setNavOpen(false);
 
     const targetId =
@@ -1304,9 +1316,24 @@ function PezhvakMusic() {
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <ListeningStat icon={Music2} value={tracks.length} label="Tracks" />
-                <ListeningStat icon={Heart} value={favorites.length} label="Favorites" />
-                <ListeningStat icon={ListMusic} value={playlists.length} label="Playlists" />
+                <ListeningStat
+                  icon={Music2}
+                  value={tracks.length}
+                  label="Tracks"
+                  onClick={() => navigateTo("My Library")}
+                />
+                <ListeningStat
+                  icon={Heart}
+                  value={favorites.length}
+                  label="Favorites"
+                  onClick={() => navigateTo("Favorites")}
+                />
+                <ListeningStat
+                  icon={ListMusic}
+                  value={playlists.length}
+                  label="Playlists"
+                  onClick={() => navigateTo("Playlists")}
+                />
               </div>
             </div>
           </section>
@@ -1882,19 +1909,26 @@ function ListeningStat({
   icon: Icon,
   value,
   label,
+  onClick,
 }: {
   icon: LucideIcon;
   value: string | number;
   label: string;
+  onClick: () => void;
 }) {
   return (
-    <div className="rounded-xl border border-border/80 bg-background/35 p-3 md:p-4">
-      <Icon size={16} className="text-primary" />
+    <button
+      type="button"
+      onClick={onClick}
+      className="group rounded-xl border border-border/80 bg-background/35 p-3 text-left transition-colors hover:border-primary/40 hover:bg-primary/5 md:p-4"
+      aria-label={`Open ${label}`}
+    >
+      <Icon size={16} className="text-primary transition-transform group-hover:scale-110" />
       <p className="mt-3 text-xl font-semibold md:text-2xl">{value}</p>
       <p className="mt-1 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
         {label}
       </p>
-    </div>
+    </button>
   );
 }
 
