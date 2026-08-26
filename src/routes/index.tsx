@@ -264,32 +264,46 @@ function PezhvakMusic() {
   }, [volume, muted]);
 
   useEffect(() => {
-    const pendingTracks = tracks.filter(
-      (track) => track.src && !track.duration && !durationByTrack[track.id],
-    );
-    if (pendingTracks.length === 0) return;
+    let cancelled = false;
+    let metadataAudio: HTMLAudioElement | null = null;
 
-    const metadataAudios = pendingTracks.map((track) => {
-      const audio = new Audio();
-      audio.preload = "metadata";
+    const loadNextMetadata = (trackIndex: number) => {
+      if (cancelled || trackIndex >= tracks.length) return;
+      const track = tracks[trackIndex];
+      if (!track.src || track.duration) {
+        loadNextMetadata(trackIndex + 1);
+        return;
+      }
+
+      metadataAudio = new Audio();
+      metadataAudio.preload = "metadata";
+      const audio = metadataAudio;
+      const finish = () => {
+        audio.removeEventListener("loadedmetadata", handleMetadata);
+        audio.removeEventListener("error", finish);
+        audio.removeAttribute("src");
+        audio.load();
+        loadNextMetadata(trackIndex + 1);
+      };
       const handleMetadata = () => {
         if (Number.isFinite(audio.duration) && audio.duration > 0) {
           setDurationByTrack((durations) => ({ ...durations, [track.id]: audio.duration }));
         }
+        finish();
       };
-      audio.addEventListener("loadedmetadata", handleMetadata);
-      audio.src = track.src;
-      return { audio, handleMetadata };
-    });
 
-    return () => {
-      metadataAudios.forEach(({ audio, handleMetadata }) => {
-        audio.removeEventListener("loadedmetadata", handleMetadata);
-        audio.removeAttribute("src");
-        audio.load();
-      });
+      audio.addEventListener("loadedmetadata", handleMetadata);
+      audio.addEventListener("error", finish);
+      audio.src = track.src;
     };
-  }, [tracks, durationByTrack]);
+
+    loadNextMetadata(0);
+    return () => {
+      cancelled = true;
+      metadataAudio?.removeAttribute("src");
+      metadataAudio?.load();
+    };
+  }, [tracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -727,7 +741,9 @@ function PezhvakMusic() {
       ? "0m"
       : knownDurationCount === tracks.length
         ? fmtLibraryDuration(libraryDuration)
-        : "Loading...";
+        : knownDurationCount > 0
+          ? `${fmtLibraryDuration(libraryDuration)}+`
+          : "--";
   const elapsed = (progress / 100) * duration;
   const visibleTracks =
     query.trim() || expandedSections["Recently Played"]
@@ -1344,6 +1360,31 @@ function PezhvakMusic() {
                             className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                           >
                             <Plus size={14} />
+                          </button>
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              toggleFav(t.id);
+                            }}
+                            aria-label={
+                              favorites.includes(t.id)
+                                ? `Remove ${t.title} from favorites`
+                                : `Add ${t.title} to favorites`
+                            }
+                            aria-pressed={favorites.includes(t.id)}
+                            title={
+                              favorites.includes(t.id)
+                                ? "Remove from favorites"
+                                : "Add to favorites"
+                            }
+                            className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
+                          >
+                            <Heart
+                              size={14}
+                              className={
+                                favorites.includes(t.id) ? "fill-primary text-primary" : ""
+                              }
+                            />
                           </button>
                         </div>
                       </div>
