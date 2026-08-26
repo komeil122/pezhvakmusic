@@ -128,6 +128,7 @@ function PezhvakMusic() {
   const [libraryFilter, setLibraryFilter] = useState<"all" | "favorites">("all");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
   const [progress, setProgress] = useState(42);
   const [volume, setVolume] = useState(70);
   const [muted, setMuted] = useState(false);
@@ -168,77 +169,59 @@ function PezhvakMusic() {
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
-  const soundContextRef = useRef<AudioContext | null>(null);
+  const focusContextRef = useRef<AudioContext | null>(null);
+  const focusSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const focusGainRef = useRef<GainNode | null>(null);
+
+  const stopFocusSound = () => {
+    focusSourceRef.current?.stop();
+    focusSourceRef.current?.disconnect();
+    focusGainRef.current?.disconnect();
+    focusSourceRef.current = null;
+    focusGainRef.current = null;
+    void focusContextRef.current?.close();
+    focusContextRef.current = null;
+  };
+
+  const startFocusSound = () => {
+    const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
+    if (!AudioContextClass || focusSourceRef.current) return;
+
+    const context = new AudioContextClass();
+    const sampleRate = context.sampleRate;
+    const buffer = context.createBuffer(2, sampleRate * 3, sampleRate);
+
+    for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
+      const data = buffer.getChannelData(channel);
+      for (let sample = 0; sample < data.length; sample += 1) {
+        const fade = 1 - sample / data.length;
+        const ember = Math.random() > 0.997 ? Math.random() * 0.8 : 0;
+        data[sample] = (Math.random() * 2 - 1) * 0.14 * fade + ember;
+      }
+    }
+
+    const source = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    const gain = context.createGain();
+    source.buffer = buffer;
+    source.loop = true;
+    filter.type = "lowpass";
+    filter.frequency.value = 2600;
+    gain.gain.value = 0.18;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(context.destination);
+    source.start();
+    focusContextRef.current = context;
+    focusSourceRef.current = source;
+    focusGainRef.current = gain;
+  };
+
+  useEffect(() => () => stopFocusSound(), []);
 
   useEffect(() => {
-    const handleButtonSound = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      const button = target?.closest("button");
-      const label = button?.getAttribute("aria-label")?.toLowerCase() ?? "";
-      const title = button?.getAttribute("title")?.toLowerCase() ?? "";
-      if (!button || button.disabled || button.querySelector('input[type="range"]')) {
-        return;
-      }
-
-      const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
-      if (!AudioContextClass) return;
-
-      const context = soundContextRef.current ?? new AudioContextClass();
-      soundContextRef.current = context;
-      void context.resume();
-
-      const now = context.currentTime;
-      const isPressed = button.getAttribute("aria-pressed") === "true";
-      const sound = label.includes("play")
-        ? isPressed
-          ? { notes: [520], duration: 0.07, type: "sine" as OscillatorType }
-          : { notes: [660, 820], duration: 0.12, type: "sine" as OscillatorType }
-        : label.includes("pause")
-          ? { notes: [420], duration: 0.09, type: "triangle" as OscillatorType }
-          : label.includes("next") || label.includes("skip forward")
-            ? { notes: [520, 740], duration: 0.13, type: "square" as OscillatorType }
-            : label.includes("previous") || label.includes("skip back")
-              ? { notes: [740, 520], duration: 0.13, type: "square" as OscillatorType }
-              : label.includes("favorite") || label.includes("heart")
-                ? { notes: [620, 780, 930], duration: 0.16, type: "sine" as OscillatorType }
-                : label.includes("playlist") || label.includes("add")
-                  ? { notes: [440, 550], duration: 0.1, type: "triangle" as OscillatorType }
-                  : label.includes("save") || title.includes("offline")
-                    ? { notes: [480, 640, 800], duration: 0.15, type: "sine" as OscillatorType }
-                    : label.includes("theme") || title.includes("theme")
-                      ? { notes: [380, 520, 680], duration: 0.18, type: "sine" as OscillatorType }
-                      : label.startsWith("close") || label.includes("back")
-                        ? { notes: [520, 380], duration: 0.1, type: "triangle" as OscillatorType }
-                        : button.className.includes("bg-primary")
-                          ? { notes: [600, 760], duration: 0.1, type: "sine" as OscillatorType }
-                          : button.getAttribute("aria-pressed") !== null
-                            ? { notes: [500], duration: 0.07, type: "sine" as OscillatorType }
-                            : { notes: [420], duration: 0.06, type: "sine" as OscillatorType };
-
-      sound.notes.forEach((frequency, index) => {
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
-        const start = now + index * 0.045;
-        const end = start + sound.duration / sound.notes.length;
-        oscillator.type = sound.type;
-        oscillator.frequency.setValueAtTime(frequency, start);
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.exponentialRampToValueAtTime(0.028, start + 0.006);
-        gain.gain.exponentialRampToValueAtTime(0.0001, end);
-        oscillator.connect(gain);
-        gain.connect(context.destination);
-        oscillator.start(start);
-        oscillator.stop(end);
-      });
-    };
-
-    document.addEventListener("click", handleButtonSound);
-    return () => {
-      document.removeEventListener("click", handleButtonSound);
-      void soundContextRef.current?.close();
-      soundContextRef.current = null;
-    };
-  }, []);
+    if (!focusMode) stopFocusSound();
+  }, [focusMode]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -254,6 +237,7 @@ function PezhvakMusic() {
         setFavorites(savedFavorites.filter((id): id is string => typeof id === "string"));
       if (Array.isArray(savedRecent))
         setRecentTrackIds(savedRecent.filter((id): id is string => typeof id === "string"));
+      setFocusMode(window.localStorage.getItem("pezhvak-focus-mode") === "true");
     } catch {
       setRecentTrackIds([]);
     }
@@ -293,6 +277,10 @@ function PezhvakMusic() {
   useEffect(() => {
     window.localStorage.setItem("pezhvak-recent", JSON.stringify(recentTrackIds));
   }, [recentTrackIds]);
+
+  useEffect(() => {
+    window.localStorage.setItem("pezhvak-focus-mode", String(focusMode));
+  }, [focusMode]);
 
   useEffect(() => {
     setTrackDisplayLimit(8);
@@ -1109,67 +1097,33 @@ function PezhvakMusic() {
               <div className="mb-3 flex items-center justify-between">
                 <div>
                   <p className="text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
-                    Playback
+                    Focus Mode
                   </p>
-                  <p className="mt-1 text-sm text-foreground">Listening controls</p>
+                  <p className="mt-1 text-sm text-foreground">Ambient campfire sound</p>
                 </div>
-                <AudioLines size={18} className="text-primary" />
-              </div>
-
-              <div className="mb-4 flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => setMuted((value) => !value)}
-                  aria-pressed={muted}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-                >
-                  {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                  {muted ? "Muted" : "Sound on"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShuffle((value) => !value)}
-                  aria-pressed={shuffle}
-                  className={`flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors ${
-                    shuffle
-                      ? "border-primary/50 bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                  }`}
-                >
-                  <Shuffle size={15} /> Shuffle
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRepeat((value) => !value)}
-                  aria-pressed={repeat}
-                  className={`flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors ${
-                    repeat
-                      ? "border-primary/50 bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                  }`}
-                >
-                  <Repeat size={15} /> Repeat
-                </button>
-              </div>
-
-              <label className="flex items-center gap-3 text-xs text-muted-foreground">
-                <Volume2 size={15} className="shrink-0 text-primary" />
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={muted ? 0 : volume}
-                  onChange={(event) => {
-                    const nextVolume = Number(event.target.value);
-                    setMuted(nextVolume === 0);
-                    setVolume(nextVolume);
-                    if (audioRef.current) audioRef.current.volume = nextVolume / 100;
+                  role="switch"
+                  aria-checked={focusMode}
+                  onClick={() => {
+                    const nextFocusMode = !focusMode;
+                    setFocusMode(nextFocusMode);
+                    if (nextFocusMode) startFocusSound();
                   }}
-                  aria-label="Settings volume"
-                  className="w-full accent-primary"
-                />
-                <span className="w-8 text-right tabular-nums">{muted ? 0 : volume}%</span>
-              </label>
+                  className={`relative h-6 w-11 rounded-full border transition-colors ${
+                    focusMode ? "border-primary bg-primary" : "border-border bg-secondary"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 size-4 rounded-full bg-background transition-transform ${
+                      focusMode ? "translate-x-5" : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+              <p className="text-xs leading-5 text-muted-foreground">
+                A gentle, endless fire sound for quiet listening and focus.
+              </p>
             </div>
           </div>
         </>
