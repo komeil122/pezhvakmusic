@@ -1614,7 +1614,7 @@ function PezhvakMusic() {
                     <button
                       key={a.name}
                       onClick={() => openArtist(a.name)}
-                      className="group rounded-2xl border border-border bg-card p-3 text-center transition-colors hover:border-primary/30"
+                      className="group rounded-full p-2 text-center transition-transform hover:-translate-y-1"
                     >
                       <img
                         src={a.cover}
