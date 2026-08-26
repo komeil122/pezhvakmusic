@@ -19,7 +19,6 @@ import {
   VolumeX,
   AudioLines,
   BarChart3,
-  Clock3,
   Download,
   Menu,
   Music2,
@@ -109,13 +108,6 @@ function fmt(sec: number) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-function fmtLibraryDuration(sec: number) {
-  const totalMinutes = Math.round(sec / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 }
 
 function PezhvakMusic() {
@@ -265,48 +257,6 @@ function PezhvakMusic() {
 
     audio.volume = muted ? 0 : volume / 100;
   }, [volume, muted]);
-
-  useEffect(() => {
-    let cancelled = false;
-    let metadataAudio: HTMLAudioElement | null = null;
-
-    const loadNextMetadata = (trackIndex: number) => {
-      if (cancelled || trackIndex >= tracks.length) return;
-      const track = tracks[trackIndex];
-      if (!track.src || track.duration) {
-        loadNextMetadata(trackIndex + 1);
-        return;
-      }
-
-      metadataAudio = new Audio();
-      metadataAudio.preload = "metadata";
-      const audio = metadataAudio;
-      const finish = () => {
-        audio.removeEventListener("loadedmetadata", handleMetadata);
-        audio.removeEventListener("error", finish);
-        audio.removeAttribute("src");
-        audio.load();
-        loadNextMetadata(trackIndex + 1);
-      };
-      const handleMetadata = () => {
-        if (Number.isFinite(audio.duration) && audio.duration > 0) {
-          setDurationByTrack((durations) => ({ ...durations, [track.id]: audio.duration }));
-        }
-        finish();
-      };
-
-      audio.addEventListener("loadedmetadata", handleMetadata);
-      audio.addEventListener("error", finish);
-      audio.src = track.src;
-    };
-
-    loadNextMetadata(0);
-    return () => {
-      cancelled = true;
-      metadataAudio?.removeAttribute("src");
-      metadataAudio?.load();
-    };
-  }, [tracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -760,21 +710,6 @@ function PezhvakMusic() {
   const recentTracks = recentTrackIds
     .map((id) => tracks.find((track) => track.id === id))
     .filter((track): track is Track => Boolean(track));
-  const libraryDuration = tracks.reduce(
-    (total, track) => total + (durationByTrack[track.id] ?? track.duration ?? 0),
-    0,
-  );
-  const knownDurationCount = tracks.filter(
-    (track) => durationByTrack[track.id] ?? track.duration,
-  ).length;
-  const libraryDurationLabel =
-    tracks.length === 0
-      ? "0m"
-      : knownDurationCount === tracks.length
-        ? fmtLibraryDuration(libraryDuration)
-        : knownDurationCount > 0
-          ? `${fmtLibraryDuration(libraryDuration)}+`
-          : "--";
   const elapsed = (progress / 100) * duration;
   const visibleTracks =
     query.trim() || expandedSections["Recently Played"]
@@ -1252,7 +1187,6 @@ function PezhvakMusic() {
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <ListeningStat icon={Music2} value={tracks.length} label="Tracks" />
                 <ListeningStat icon={Heart} value={favorites.length} label="Favorites" />
-                <ListeningStat icon={Clock3} value={libraryDurationLabel} label="Library" />
               </div>
             </div>
           </section>
