@@ -722,24 +722,18 @@ function PezhvakMusic() {
   const toggleFav = (id: string) =>
     setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
 
-  const downloadTrack = async (track: Track) => {
+  const saveTrackOffline = async (track: Track) => {
     if (!track.src || downloadingTrackId) return;
 
     setDownloadingTrackId(track.id);
     try {
+      if (!("caches" in window)) throw new Error("Offline storage is unavailable");
       const response = await fetch(track.src);
-      if (!response.ok) throw new Error("Audio download failed");
-      const blobUrl = URL.createObjectURL(await response.blob());
-      const extension = track.src.split(".").pop()?.split("?")[0] || "mp3";
-      const anchor = document.createElement("a");
-      anchor.href = blobUrl;
-      anchor.download = `${track.title.replace(/[\\/:*?"<>|]/g, "-")}.${extension}`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      URL.revokeObjectURL(blobUrl);
+      if (!response.ok && response.type !== "opaque") throw new Error("Offline save failed");
+      const cache = await caches.open("pezhvak-audio-v1");
+      await cache.put(track.src, response.clone());
     } catch {
-      window.open(track.src, "_blank", "noopener,noreferrer");
+      setMusicMessage("This track could not be saved for offline listening.");
     } finally {
       setDownloadingTrackId(null);
     }
@@ -1107,9 +1101,9 @@ function PezhvakMusic() {
                 <Heart size={21} className={isFav ? "fill-primary text-primary" : ""} />
               </button>
               <button
-                onClick={() => void downloadTrack(current)}
-                aria-label={`Download ${current.title}`}
-                title="Download for offline listening"
+                onClick={() => void saveTrackOffline(current)}
+                aria-label={`Save ${current.title} for offline listening`}
+                title="Save for offline listening"
                 disabled={downloadingTrackId === current.id}
                 className="shrink-0 text-muted-foreground hover:text-primary disabled:opacity-50"
               >
@@ -1423,10 +1417,10 @@ function PezhvakMusic() {
                           <button
                             onClick={(event) => {
                               event.stopPropagation();
-                              void downloadTrack(t);
+                              void saveTrackOffline(t);
                             }}
-                            aria-label={`Download ${t.title}`}
-                            title="Download for offline listening"
+                            aria-label={`Save ${t.title} for offline listening`}
+                            title="Save for offline listening"
                             disabled={downloadingTrackId === t.id}
                             className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
                           >
@@ -1616,9 +1610,9 @@ function PezhvakMusic() {
             />
           </button>
           <button
-            onClick={() => void downloadTrack(current)}
-            aria-label={`Download ${current.title}`}
-            title="Download for offline listening"
+            onClick={() => void saveTrackOffline(current)}
+            aria-label={`Save ${current.title} for offline listening`}
+            title="Save for offline listening"
             disabled={downloadingTrackId === current.id}
             className="text-muted-foreground hover:text-primary disabled:opacity-50"
           >
