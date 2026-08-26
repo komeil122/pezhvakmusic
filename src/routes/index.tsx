@@ -104,10 +104,8 @@ const themeOptions = [
   { id: "ember-red", name: "Crimson Ember", accent: "Warm ember glow" },
   { id: "embers", name: "Verdant Ember", accent: "Forest glow" },
   { id: "blue", name: "Deep Blue", accent: "Midnight current" },
-  { id: "graphite", name: "Graphite Noir", accent: "Monochrome cool" },
   { id: "purple", name: "Royal Pulse", accent: "Electric plum glow" },
   { id: "yellow", name: "Solar Dust", accent: "Golden signal" },
-  { id: "brown", name: "Cocoa Noir", accent: "Deep earth warmth" },
   { id: "caramel", name: "Caramel Tape", accent: "Soft amber warmth" },
   { id: "silver", name: "Silver Dark", accent: "Cool metallic glow" },
 ] as const;
@@ -168,6 +166,7 @@ function PezhvakMusic() {
   const [trackDuration, setTrackDuration] = useState<number>(0);
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -189,6 +188,11 @@ function PezhvakMusic() {
   }, []);
 
   const current = tracks[index] ?? tracks[0];
+  const nextTrack = nextTrackId
+    ? tracks.find((track) => track.id === nextTrackId)
+    : tracks.length > 1
+      ? tracks[(index + 1) % tracks.length]
+      : undefined;
   const isFav = current ? favorites.includes(current.id) : false;
   const duration = current
     ? current.src
@@ -298,6 +302,16 @@ function PezhvakMusic() {
         void audio.play();
         return;
       }
+      const upcomingTrack = nextTrackId
+        ? tracks.find((track) => track.id === nextTrackId)
+        : tracks.length > 1
+          ? tracks[(index + 1) % tracks.length]
+          : undefined;
+      const preloadAudio = preloadAudioRef.current;
+      if (upcomingTrack?.src && preloadAudio?.getAttribute("src") === upcomingTrack.src) {
+        audio.src = upcomingTrack.src;
+        audio.load();
+      }
       setIndex((i) => {
         const queuedIndex = nextTrackId
           ? tracks.findIndex((track) => track.id === nextTrackId)
@@ -337,7 +351,7 @@ function PezhvakMusic() {
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("error", handleError);
     };
-  }, [current?.id, nextTrackId, playing, repeat, tracks]);
+  }, [current?.id, index, nextTrackId, playing, repeat, tracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -358,6 +372,20 @@ function PezhvakMusic() {
     setPlaybackError(null);
     setProgress(0);
   }, [current?.id, current?.src]);
+
+  useEffect(() => {
+    const preloadAudio = preloadAudioRef.current;
+    if (!preloadAudio || !nextTrack?.src) return;
+
+    if (preloadAudio.getAttribute("src") !== nextTrack.src) {
+      preloadAudio.src = nextTrack.src;
+      preloadAudio.load();
+    }
+
+    return () => {
+      preloadAudio.pause();
+    };
+  }, [nextTrack?.id, nextTrack?.src]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -820,6 +848,7 @@ function PezhvakMusic() {
   return (
     <div className="music-shell min-h-screen overflow-x-hidden bg-background text-foreground">
       <audio ref={audioRef} preload="auto" crossOrigin="anonymous" playsInline />
+      <audio ref={preloadAudioRef} preload="auto" crossOrigin="anonymous" playsInline />
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar transition-transform lg:translate-x-0 ${
@@ -923,7 +952,7 @@ function PezhvakMusic() {
             onClick={() => setSettingsOpen(false)}
           />
           <div
-            className="settings-panel fixed z-50 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-5 shadow-2xl"
+            className="settings-panel theme-picker fixed z-50 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-5 shadow-2xl"
             style={{ top: settingsPosition.top, left: settingsPosition.left }}
           >
             <div className="mb-4 flex items-center justify-between">
@@ -942,12 +971,12 @@ function PezhvakMusic() {
               </button>
             </div>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2">
               {themeOptions.map((option) => (
                 <button
                   key={option.id}
                   onClick={() => applyTheme(option.id)}
-                  className={`flex w-full items-center justify-between rounded-xl border p-3 text-left transition-colors ${
+                  className={`flex min-h-20 w-full flex-col items-start justify-between rounded-xl border p-3 text-left transition-colors ${
                     theme === option.id
                       ? "border-primary/50 bg-primary/10"
                       : "border-border bg-secondary/30 hover:border-primary/30"
@@ -958,7 +987,7 @@ function PezhvakMusic() {
                     <p className="text-xs text-muted-foreground">{option.accent}</p>
                   </div>
                   <span
-                    className="h-3 w-3 rounded-full border border-border"
+                    className="mb-3 h-4 w-4 rounded-full border border-border shadow-sm"
                     style={{
                       backgroundColor:
                         option.id === "obsidian"
@@ -969,17 +998,13 @@ function PezhvakMusic() {
                               ? "#4eaa78"
                               : option.id === "blue"
                                 ? "#477bc2"
-                                : option.id === "graphite"
-                                  ? "#525252"
-                                  : option.id === "purple"
-                                    ? "#9b6cff"
-                                    : option.id === "yellow"
-                                      ? "#e0b84f"
-                                      : option.id === "brown"
-                                        ? "#a8754f"
-                                        : option.id === "caramel"
-                                          ? "#d49a54"
-                                          : "#b8c0ca",
+                                : option.id === "purple"
+                                  ? "#9b6cff"
+                                  : option.id === "yellow"
+                                    ? "#e0b84f"
+                                    : option.id === "caramel"
+                                      ? "#d49a54"
+                                      : "#b8c0ca",
                     }}
                   />
                 </button>
