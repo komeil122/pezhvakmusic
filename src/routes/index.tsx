@@ -174,12 +174,9 @@ function PezhvakMusic() {
     const handleButtonSound = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const button = target?.closest("button");
-      if (
-        !button ||
-        button.disabled ||
-        button.getAttribute("aria-label")?.startsWith("Close") ||
-        button.querySelector('input[type="range"]')
-      ) {
+      const label = button?.getAttribute("aria-label")?.toLowerCase() ?? "";
+      const title = button?.getAttribute("title")?.toLowerCase() ?? "";
+      if (!button || button.disabled || button.querySelector('input[type="range"]')) {
         return;
       }
 
@@ -190,23 +187,49 @@ function PezhvakMusic() {
       soundContextRef.current = context;
       void context.resume();
 
-      const isPrimary = button.className.includes("bg-primary");
-      const isToggle = button.getAttribute("aria-pressed") !== null;
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
       const now = context.currentTime;
-      const frequency = isPrimary ? 660 : isToggle ? 520 : 420;
+      const isPressed = button.getAttribute("aria-pressed") === "true";
+      const sound = label.includes("play")
+        ? isPressed
+          ? { notes: [520], duration: 0.07, type: "sine" as OscillatorType }
+          : { notes: [660, 820], duration: 0.12, type: "sine" as OscillatorType }
+        : label.includes("pause")
+          ? { notes: [420], duration: 0.09, type: "triangle" as OscillatorType }
+          : label.includes("next") || label.includes("skip forward")
+            ? { notes: [520, 740], duration: 0.13, type: "square" as OscillatorType }
+            : label.includes("previous") || label.includes("skip back")
+              ? { notes: [740, 520], duration: 0.13, type: "square" as OscillatorType }
+              : label.includes("favorite") || label.includes("heart")
+                ? { notes: [620, 780, 930], duration: 0.16, type: "sine" as OscillatorType }
+                : label.includes("playlist") || label.includes("add")
+                  ? { notes: [440, 550], duration: 0.1, type: "triangle" as OscillatorType }
+                  : label.includes("save") || title.includes("offline")
+                    ? { notes: [480, 640, 800], duration: 0.15, type: "sine" as OscillatorType }
+                    : label.includes("theme") || title.includes("theme")
+                      ? { notes: [380, 520, 680], duration: 0.18, type: "sine" as OscillatorType }
+                      : label.startsWith("close") || label.includes("back")
+                        ? { notes: [520, 380], duration: 0.1, type: "triangle" as OscillatorType }
+                        : button.className.includes("bg-primary")
+                          ? { notes: [600, 760], duration: 0.1, type: "sine" as OscillatorType }
+                          : button.getAttribute("aria-pressed") !== null
+                            ? { notes: [500], duration: 0.07, type: "sine" as OscillatorType }
+                            : { notes: [420], duration: 0.06, type: "sine" as OscillatorType };
 
-      oscillator.type = "sine";
-      oscillator.frequency.setValueAtTime(frequency, now);
-      oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.82, now + 0.06);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.035, now + 0.008);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-      oscillator.start(now);
-      oscillator.stop(now + 0.08);
+      sound.notes.forEach((frequency, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const start = now + index * 0.045;
+        const end = start + sound.duration / sound.notes.length;
+        oscillator.type = sound.type;
+        oscillator.frequency.setValueAtTime(frequency, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.028, start + 0.006);
+        gain.gain.exponentialRampToValueAtTime(0.0001, end);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start(start);
+        oscillator.stop(end);
+      });
     };
 
     document.addEventListener("click", handleButtonSound);
