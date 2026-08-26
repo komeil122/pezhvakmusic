@@ -163,6 +163,7 @@ function PezhvakMusic() {
     "Your Playlists": false,
     "Top Artists": false,
   });
+  const [trackDisplayLimit, setTrackDisplayLimit] = useState(8);
   const [trackDuration, setTrackDuration] = useState<number>(0);
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -221,6 +222,10 @@ function PezhvakMusic() {
   useEffect(() => {
     window.localStorage.setItem("pezhvak-recent", JSON.stringify(recentTrackIds));
   }, [recentTrackIds]);
+
+  useEffect(() => {
+    setTrackDisplayLimit(8);
+  }, [libraryFilter, mood, query]);
 
   useEffect(() => {
     fetch("/playlist.json")
@@ -835,16 +840,22 @@ function PezhvakMusic() {
     .map((id) => tracks.find((track) => track.id === id))
     .filter((track): track is Track => Boolean(track));
   const elapsed = (progress / 100) * duration;
-  const visibleTracks =
+  const trackSource =
     query.trim() || expandedSections["Recently Played"]
       ? filtered
-      : (recentTracks.length ? recentTracks : filtered).slice(0, 5);
+      : recentTracks.length
+        ? recentTracks
+        : filtered;
+  const visibleTracks = trackSource.slice(
+    0,
+    expandedSections["Recently Played"] ? trackDisplayLimit : 5,
+  );
   const visiblePlaylistCards = expandedSections["Your Playlists"]
     ? filteredPlaylists
     : filteredPlaylists.slice(0, 5);
   const visibleArtistsList = expandedSections["Top Artists"]
-    ? filteredArtists
-    : filteredArtists.slice(0, 6);
+    ? filteredArtists.slice(0, 6)
+    : filteredArtists.slice(0, 2);
 
   if (playlistLoading || !current) {
     return (
@@ -1548,6 +1559,16 @@ function PezhvakMusic() {
                   ))}
                   {filtered.length === 0 && <Empty />}
                 </div>
+                {expandedSections["Recently Played"] &&
+                  visibleTracks.length < trackSource.length && (
+                    <button
+                      type="button"
+                      onClick={() => setTrackDisplayLimit((limit) => limit + 8)}
+                      className="mx-auto mt-5 block rounded-full border border-border px-4 py-2 text-xs text-primary transition-colors hover:border-primary/40 hover:bg-primary/5"
+                    >
+                      Load More Tracks
+                    </button>
+                  )}
               </Section>
 
               <Section
@@ -1593,7 +1614,7 @@ function PezhvakMusic() {
                     <button
                       key={a.name}
                       onClick={() => openArtist(a.name)}
-                      className="group rounded-xl border border-border bg-card p-3 text-left transition-colors hover:border-primary/30"
+                      className="group rounded-2xl border border-border bg-card p-3 text-center transition-colors hover:border-primary/30"
                     >
                       <img
                         src={a.cover}
@@ -1601,7 +1622,7 @@ function PezhvakMusic() {
                         loading="lazy"
                         width={768}
                         height={768}
-                        className="music-cover aspect-square w-full rounded-lg border border-border object-cover"
+                        className="music-cover mx-auto aspect-square w-[78%] rounded-full border border-primary/30 object-cover"
                         style={{
                           objectPosition: `${35 + ((a.visualIndex * 17) % 30)}% ${35 + ((a.visualIndex * 13) % 30)}%`,
                           filter: `grayscale(${35 + ((a.visualIndex * 11) % 45)}%) contrast(${1 + (a.visualIndex % 3) * 0.04})`,
