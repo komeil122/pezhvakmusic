@@ -20,6 +20,7 @@ import {
   AudioLines,
   BarChart3,
   Clock3,
+  Download,
   Menu,
   Music2,
   Sparkles,
@@ -148,6 +149,7 @@ function PezhvakMusic() {
   const [musicArtist, setMusicArtist] = useState("");
   const [musicAlbum, setMusicAlbum] = useState("");
   const [musicMessage, setMusicMessage] = useState("");
+  const [downloadingTrackId, setDownloadingTrackId] = useState<string | null>(null);
   const [settingsPosition, setSettingsPosition] = useState({ top: 80, left: 820 });
   const [theme, setTheme] = useState<(typeof themeOptions)[number]["id"]>("obsidian");
   const [playlists, setPlaylists] = useState<PlaylistCard[]>(basePlaylists);
@@ -720,6 +722,29 @@ function PezhvakMusic() {
   const toggleFav = (id: string) =>
     setFavorites((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
 
+  const downloadTrack = async (track: Track) => {
+    if (!track.src || downloadingTrackId) return;
+
+    setDownloadingTrackId(track.id);
+    try {
+      const response = await fetch(track.src);
+      if (!response.ok) throw new Error("Audio download failed");
+      const blobUrl = URL.createObjectURL(await response.blob());
+      const extension = track.src.split(".").pop()?.split("?")[0] || "mp3";
+      const anchor = document.createElement("a");
+      anchor.href = blobUrl;
+      anchor.download = `${track.title.replace(/[\\/:*?"<>|]/g, "-")}.${extension}`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      window.open(track.src, "_blank", "noopener,noreferrer");
+    } finally {
+      setDownloadingTrackId(null);
+    }
+  };
+
   const queue = shuffle
     ? []
     : tracks
@@ -1081,6 +1106,15 @@ function PezhvakMusic() {
               >
                 <Heart size={21} className={isFav ? "fill-primary text-primary" : ""} />
               </button>
+              <button
+                onClick={() => void downloadTrack(current)}
+                aria-label={`Download ${current.title}`}
+                title="Download for offline listening"
+                disabled={downloadingTrackId === current.id}
+                className="shrink-0 text-muted-foreground hover:text-primary disabled:opacity-50"
+              >
+                <Download size={19} />
+              </button>
             </div>
             <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
               <span>{fmt(elapsed)}</span>
@@ -1386,6 +1420,18 @@ function PezhvakMusic() {
                               }
                             />
                           </button>
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              void downloadTrack(t);
+                            }}
+                            aria-label={`Download ${t.title}`}
+                            title="Download for offline listening"
+                            disabled={downloadingTrackId === t.id}
+                            className="grid size-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+                          >
+                            <Download size={14} />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1568,6 +1614,15 @@ function PezhvakMusic() {
               size={22}
               className={isFav ? "fill-primary text-primary" : "text-muted-foreground"}
             />
+          </button>
+          <button
+            onClick={() => void downloadTrack(current)}
+            aria-label={`Download ${current.title}`}
+            title="Download for offline listening"
+            disabled={downloadingTrackId === current.id}
+            className="text-muted-foreground hover:text-primary disabled:opacity-50"
+          >
+            <Download size={19} />
           </button>
         </div>
 
