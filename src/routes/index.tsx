@@ -50,6 +50,12 @@ type Track = {
   src?: string;
 };
 
+function isUnsupportedAudioSource(src?: string) {
+  return Boolean(
+    src && new URL(src, window.location.origin).pathname.toLowerCase().endsWith(".flac"),
+  );
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -215,10 +221,12 @@ function PezhvakMusic() {
       })
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const loadedTracks = (data as Track[]).map((track, index) => ({
-            ...track,
-            cover: referenceCovers[index % referenceCovers.length],
-          }));
+          const loadedTracks = (data as Track[])
+            .filter((track) => !isUnsupportedAudioSource(track.src))
+            .map((track, index) => ({
+              ...track,
+              cover: referenceCovers[index % referenceCovers.length],
+            }));
           const savedManualTracks = JSON.parse(
             window.localStorage.getItem("pezhvak-manual-tracks") ?? "[]",
           );
@@ -337,8 +345,10 @@ function PezhvakMusic() {
       return;
     }
 
-    audio.src = current.src;
-    audio.load();
+    if (audio.getAttribute("src") !== current.src) {
+      audio.src = current.src;
+      audio.load();
+    }
     setTrackDuration(0);
     setPlaybackError(null);
     setProgress(0);
@@ -478,9 +488,16 @@ function PezhvakMusic() {
   const playAudio = (track: Track) => {
     const audio = audioRef.current;
     if (!audio || !track.src) return;
+    if (isUnsupportedAudioSource(track.src)) {
+      setPlaying(false);
+      setPlaybackError(`${track.title} uses an unsupported FLAC format on mobile browsers.`);
+      return;
+    }
 
-    audio.src = track.src;
-    audio.load();
+    if (audio.getAttribute("src") !== track.src) {
+      audio.src = track.src;
+      audio.load();
+    }
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === "function") {
       void playPromise.catch((error: unknown) => {
@@ -501,7 +518,17 @@ function PezhvakMusic() {
       return;
     }
 
-    playAudio(current);
+    if (audio.getAttribute("src") === current.src) {
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        void playPromise.catch(() => {
+          setPlaying(false);
+          setPlaybackError(`Could not play ${current.title}.`);
+        });
+      }
+    } else {
+      playAudio(current);
+    }
     setPlaying(true);
   };
 
