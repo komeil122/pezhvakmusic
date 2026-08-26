@@ -178,7 +178,7 @@ function PezhvakMusic() {
   const isFav = current ? favorites.includes(current.id) : false;
   const duration = current
     ? current.src
-      ? trackDuration || durationByTrack[current.id] || current.duration || 0
+      ? durationByTrack[current.id] || trackDuration || current.duration || 0
       : current.duration || 0
     : 0;
 
@@ -255,6 +255,34 @@ function PezhvakMusic() {
 
     audio.volume = muted ? 0 : volume / 100;
   }, [volume, muted]);
+
+  useEffect(() => {
+    const pendingTracks = tracks.filter(
+      (track) => track.src && !track.duration && !durationByTrack[track.id],
+    );
+    if (pendingTracks.length === 0) return;
+
+    const metadataAudios = pendingTracks.map((track) => {
+      const audio = new Audio();
+      audio.preload = "metadata";
+      const handleMetadata = () => {
+        if (Number.isFinite(audio.duration) && audio.duration > 0) {
+          setDurationByTrack((durations) => ({ ...durations, [track.id]: audio.duration }));
+        }
+      };
+      audio.addEventListener("loadedmetadata", handleMetadata);
+      audio.src = track.src;
+      return { audio, handleMetadata };
+    });
+
+    return () => {
+      metadataAudios.forEach(({ audio, handleMetadata }) => {
+        audio.removeEventListener("loadedmetadata", handleMetadata);
+        audio.removeAttribute("src");
+        audio.load();
+      });
+    };
+  }, [tracks, durationByTrack]);
 
   useEffect(() => {
     const audio = audioRef.current;
