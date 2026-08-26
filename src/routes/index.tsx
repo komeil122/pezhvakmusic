@@ -87,6 +87,26 @@ type PlaylistCard = {
 
 const basePlaylists: PlaylistCard[] = [
   { id: "p1", name: "Something Dead", cover: referenceCovers[0], icon: ListMusic, count: 0 },
+  {
+    id: "something-dead-fix",
+    name: "Something Dead Fix",
+    cover: referenceCovers[1],
+    icon: ListMusic,
+    count: 0,
+    trackIds: [
+      "drive-1W6uw6bm9z-yAxn1juQk3DxFmBCvgdqUf",
+      "drive-1E7UI3H4b-1rmLvETxp0n1fJdQFa43Rs8",
+      "drive-1_oazaRbvNtpmy3u1dKsoTpYLVQegGxbV",
+      "drive-1xLsjnp5YCK3M5jx0VYHJ0QKG_QWCZ_9z",
+      "drive-1F40ACDwxGs8giWFQmr_d2g82TTisHc9l",
+      "drive-1Voims3aUWX53B7z-dN1uIouDA62KPvZe",
+      "drive-1U4q4uDAx6ZMGPpXWU1sgXBqYfQLyAsIN",
+      "drive-11x1TXyn6SXz3wNcWtTD348ibpZMjj24X",
+      "drive-1pbbhs_am4D-OIqFZXhJewew__0DB8E5_",
+      "drive-1FXXk3Cr_4BXntbsHXX6VW7wR9VXaX2jV",
+      "drive-1dTkmiSPwJ3xs-to8bQVwmu7YYx43pLHF",
+    ],
+  },
 ];
 
 const navItems = [
