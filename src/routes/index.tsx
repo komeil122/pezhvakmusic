@@ -110,6 +110,13 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function fmtLibraryDuration(sec: number) {
+  const totalMinutes = Math.round(sec / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+}
+
 function PezhvakMusic() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistLoading, setPlaylistLoading] = useState(true);
@@ -708,9 +715,19 @@ function PezhvakMusic() {
   const recentTracks = recentTrackIds
     .map((id) => tracks.find((track) => track.id === id))
     .filter((track): track is Track => Boolean(track));
-  const libraryMinutes = Math.round(
-    tracks.reduce((total, track) => total + (track.duration ?? 0), 0) / 60,
+  const libraryDuration = tracks.reduce(
+    (total, track) => total + (durationByTrack[track.id] ?? track.duration ?? 0),
+    0,
   );
+  const knownDurationCount = tracks.filter(
+    (track) => durationByTrack[track.id] ?? track.duration,
+  ).length;
+  const libraryDurationLabel =
+    tracks.length === 0
+      ? "0m"
+      : knownDurationCount === tracks.length
+        ? fmtLibraryDuration(libraryDuration)
+        : "Loading...";
   const elapsed = (progress / 100) * duration;
   const visibleTracks =
     query.trim() || expandedSections["Recently Played"]
@@ -1179,7 +1196,7 @@ function PezhvakMusic() {
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <ListeningStat icon={Music2} value={tracks.length} label="Tracks" />
                 <ListeningStat icon={Heart} value={favorites.length} label="Favorites" />
-                <ListeningStat icon={Clock3} value={`${libraryMinutes}m`} label="Library" />
+                <ListeningStat icon={Clock3} value={libraryDurationLabel} label="Library" />
               </div>
             </div>
           </section>
