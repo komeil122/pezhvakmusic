@@ -125,6 +125,7 @@ function PezhvakMusic() {
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [nextTrackId, setNextTrackId] = useState<string | null>(null);
+  const [playbackError, setPlaybackError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>(["khooneye-man"]);
   const [recentTrackIds, setRecentTrackIds] = useState<string[]>([]);
   const [navOpen, setNavOpen] = useState(false);
@@ -296,6 +297,7 @@ function PezhvakMusic() {
 
     const handleCanPlay = () => {
       if (!playing) return;
+      setPlaybackError(null);
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.catch === "function") {
         void playPromise.catch((error: unknown) => {
@@ -305,15 +307,22 @@ function PezhvakMusic() {
       }
     };
 
+    const handleError = () => {
+      setPlaying(false);
+      setPlaybackError(`Could not play ${current.title}.`);
+    };
+
     audio.addEventListener("loadedmetadata", handleMetadata);
     audio.addEventListener("timeupdate", handleTimeUpdate);
     audio.addEventListener("ended", handleEnded);
     audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("error", handleError);
     return () => {
       audio.removeEventListener("loadedmetadata", handleMetadata);
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("error", handleError);
     };
   }, [current?.id, nextTrackId, playing, repeat, tracks]);
 
@@ -330,6 +339,8 @@ function PezhvakMusic() {
 
     audio.src = current.src;
     audio.load();
+    setTrackDuration(0);
+    setPlaybackError(null);
     setProgress(0);
   }, [current?.id, current?.src]);
 
@@ -464,18 +475,50 @@ function PezhvakMusic() {
     return q ? artists.filter((a) => a.name.toLowerCase().includes(q)) : artists;
   }, [artists, query]);
 
+  const playAudio = (track: Track) => {
+    const audio = audioRef.current;
+    if (!audio || !track.src) return;
+
+    audio.src = track.src;
+    audio.load();
+    const playPromise = audio.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      void playPromise.catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setPlaying(false);
+        setPlaybackError(`Could not play ${track.title}.`);
+      });
+    }
+  };
+
+  const togglePlayback = () => {
+    const audio = audioRef.current;
+    if (!audio || !current?.src) return;
+
+    if (playing) {
+      audio.pause();
+      setPlaying(false);
+      return;
+    }
+
+    playAudio(current);
+    setPlaying(true);
+  };
+
   const selectTrack = (t: Track) => {
     const i = tracks.findIndex((x) => x.id === t.id);
     setIndex(i < 0 ? 0 : i);
     setTrackDuration(0);
     setProgress(0);
+    playAudio(t);
     setPlaying(true);
     setNextTrackId(null);
+    setPlaybackError(null);
     setRecentTrackIds((recent) => [t.id, ...recent.filter((id) => id !== t.id)].slice(0, 12));
   };
 
   const queueTrackNext = (track: Track) => {
-    if (track.id !== current?.id) setNextTrackId(track.id);
+    setNextTrackId(track.id);
   };
 
   const openPlaylist = (playlist: PlaylistCard) => {
@@ -674,10 +717,14 @@ function PezhvakMusic() {
   };
 
   const step = (dir: 1 | -1) => {
+    if (tracks.length === 0) return;
     setIndex((i) => {
       if (shuffle) return Math.floor(Math.random() * tracks.length);
       return (i + dir + tracks.length) % tracks.length;
     });
+    setNextTrackId(null);
+    setTrackDuration(0);
+    setPlaybackError(null);
     setProgress(0);
   };
 
@@ -703,10 +750,15 @@ function PezhvakMusic() {
 
   const queue = shuffle
     ? []
-    : tracks
-        .slice(index + 1)
-        .concat(tracks.slice(0, index))
-        .slice(0, 4);
+    : [nextTrackId ? tracks.find((track) => track.id === nextTrackId) : undefined]
+        .filter((track): track is Track => Boolean(track))
+        .concat(
+          tracks
+            .slice(index + 1)
+            .concat(tracks.slice(0, index))
+            .filter((track) => track.id !== nextTrackId)
+            .slice(0, 4),
+        );
   const recentTracks = recentTrackIds
     .map((id) => tracks.find((track) => track.id === id))
     .filter((track): track is Track => Boolean(track));
@@ -1074,7 +1126,7 @@ function PezhvakMusic() {
               playing={playing}
               shuffle={shuffle}
               repeat={repeat}
-              onPlay={() => setPlaying((value) => !value)}
+              onPlay={togglePlayback}
               onNext={() => step(1)}
               onPrev={() => step(-1)}
               onShuffle={() => setShuffle((value) => !value)}
@@ -1608,7 +1660,7 @@ function PezhvakMusic() {
           playing={playing}
           shuffle={shuffle}
           repeat={repeat}
-          onPlay={() => setPlaying((p) => !p)}
+          onPlay={togglePlayback}
           onNext={() => step(1)}
           onPrev={() => step(-1)}
           onShuffle={() => setShuffle((s) => !s)}
@@ -1687,7 +1739,7 @@ function PezhvakMusic() {
             playing={playing}
             shuffle={shuffle}
             repeat={repeat}
-            onPlay={() => setPlaying((p) => !p)}
+            onPlay={togglePlayback}
             onNext={() => step(1)}
             onPrev={() => step(-1)}
             onShuffle={() => setShuffle((s) => !s)}
