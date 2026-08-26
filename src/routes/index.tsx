@@ -109,6 +109,7 @@ const themeOptions = [
   { id: "yellow", name: "Solar Dust", accent: "Golden signal" },
   { id: "brown", name: "Cocoa Noir", accent: "Deep earth warmth" },
   { id: "caramel", name: "Caramel Tape", accent: "Soft amber warmth" },
+  { id: "silver", name: "Silver Dark", accent: "Cool metallic glow" },
 ] as const;
 
 const localAdminName = "admin-komeil";
@@ -976,7 +977,9 @@ function PezhvakMusic() {
                                       ? "#e0b84f"
                                       : option.id === "brown"
                                         ? "#a8754f"
-                                        : "#d49a54",
+                                        : option.id === "caramel"
+                                          ? "#d49a54"
+                                          : "#b8c0ca",
                     }}
                   />
                 </button>
