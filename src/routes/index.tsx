@@ -105,6 +105,10 @@ const themeOptions = [
   { id: "embers", name: "Verdant Ember", accent: "Forest glow" },
   { id: "blue", name: "Deep Blue", accent: "Midnight current" },
   { id: "graphite", name: "Graphite Noir", accent: "Monochrome cool" },
+  { id: "purple", name: "Royal Pulse", accent: "Electric plum glow" },
+  { id: "yellow", name: "Solar Dust", accent: "Golden signal" },
+  { id: "brown", name: "Cocoa Noir", accent: "Deep earth warmth" },
+  { id: "caramel", name: "Caramel Tape", accent: "Soft amber warmth" },
 ] as const;
 
 const localAdminName = "admin-komeil";
@@ -814,7 +818,7 @@ function PezhvakMusic() {
 
   return (
     <div className="music-shell min-h-screen overflow-x-hidden bg-background text-foreground">
-      <audio ref={audioRef} preload="metadata" />
+      <audio ref={audioRef} preload="auto" crossOrigin="anonymous" playsInline />
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar transition-transform lg:translate-x-0 ${
@@ -964,7 +968,15 @@ function PezhvakMusic() {
                               ? "#4eaa78"
                               : option.id === "blue"
                                 ? "#477bc2"
-                                : "#525252",
+                                : option.id === "graphite"
+                                  ? "#525252"
+                                  : option.id === "purple"
+                                    ? "#9b6cff"
+                                    : option.id === "yellow"
+                                      ? "#e0b84f"
+                                      : option.id === "brown"
+                                        ? "#a8754f"
+                                        : "#d49a54",
                     }}
                   />
                 </button>
