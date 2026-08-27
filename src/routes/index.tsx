@@ -62,7 +62,7 @@ const uploadedCovers = [
   "photo_10_2026-08-25_05-52-57.jpg",
   ...Array.from(
     { length: 30 },
-    (_, index) => `photo_${index + 1}_2026-08-27_07-04-${index < 10 ? "19" : "20"}.jpg`,
+    (_, index) => `photo_${index + 1}_2026-08-27_07-04-${index < 13 ? "19" : "20"}.jpg`,
   ),
 ];
 
