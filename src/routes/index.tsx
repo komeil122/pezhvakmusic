@@ -127,6 +127,15 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function shuffleRank(id: string) {
+  let hash = 2166136261;
+  for (let index = 0; index < id.length; index += 1) {
+    hash ^= id.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
 function PezhvakMusic() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistLoading, setPlaylistLoading] = useState(true);
@@ -196,10 +205,19 @@ function PezhvakMusic() {
   }, []);
 
   const current = tracks[index] ?? tracks[0];
+  const shuffleTracks = useMemo(
+    () => [...tracks].sort((first, second) => shuffleRank(first.id) - shuffleRank(second.id)),
+    [tracks],
+  );
   const nextTrack = nextTrackId
     ? tracks.find((track) => track.id === nextTrackId)
     : tracks.length > 1
-      ? tracks[(index + 1) % tracks.length]
+      ? shuffle
+        ? shuffleTracks[
+            (shuffleTracks.findIndex((track) => track.id === current?.id) + 1) %
+              shuffleTracks.length
+          ]
+        : tracks[(index + 1) % tracks.length]
       : undefined;
   const isFav = current ? favorites.includes(current.id) : false;
   const duration = current
@@ -328,7 +346,14 @@ function PezhvakMusic() {
         const queuedIndex = nextTrackId
           ? tracks.findIndex((track) => track.id === nextTrackId)
           : -1;
-        return queuedIndex >= 0 ? queuedIndex : (i + 1) % tracks.length;
+        if (queuedIndex >= 0) return queuedIndex;
+        if (shuffle) {
+          const nextShuffleIndex =
+            (shuffleTracks.findIndex((track) => track.id === tracks[i]?.id) + 1) %
+            shuffleTracks.length;
+          return tracks.findIndex((track) => track.id === shuffleTracks[nextShuffleIndex]?.id);
+        }
+        return (i + 1) % tracks.length;
       });
       setNextTrackId(null);
       setProgress(0);
@@ -363,7 +388,7 @@ function PezhvakMusic() {
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("error", handleError);
     };
-  }, [current?.id, index, nextTrackId, playing, repeat, tracks]);
+  }, [current?.id, index, nextTrackId, playing, repeat, shuffle, shuffleTracks, tracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -802,7 +827,12 @@ function PezhvakMusic() {
   const step = (dir: 1 | -1) => {
     if (tracks.length === 0) return;
     setIndex((i) => {
-      if (shuffle) return Math.floor(Math.random() * tracks.length);
+      if (shuffle) {
+        const currentShuffleIndex = shuffleTracks.findIndex((track) => track.id === tracks[i]?.id);
+        const nextShuffleIndex =
+          (currentShuffleIndex + dir + shuffleTracks.length) % shuffleTracks.length;
+        return tracks.findIndex((track) => track.id === shuffleTracks[nextShuffleIndex]?.id);
+      }
       return (i + dir + tracks.length) % tracks.length;
     });
     setNextTrackId(null);
