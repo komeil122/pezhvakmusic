@@ -39,6 +39,32 @@ const referenceCovers = Array.from(
   { length: 11 },
   (_, index) => `/cover/reference-cover-${String(index + 1).padStart(2, "0")}.jpg`,
 );
+const uploadedCovers = [
+  "photo_1_2026-08-25_05-36-06.jpg",
+  "photo_2_2026-08-25_05-36-06.jpg",
+  "photo_3_2026-08-25_05-36-06.jpg",
+  "photo_4_2026-08-25_05-36-06.jpg",
+  "photo_5_2026-08-25_05-36-06.jpg",
+  "photo_6_2026-08-25_05-36-06.jpg",
+  "photo_7_2026-08-25_05-36-06.jpg",
+  "photo_8_2026-08-25_05-36-06.jpg",
+  "photo_9_2026-08-25_05-36-06.jpg",
+  "photo_10_2026-08-25_05-36-06.jpg",
+  "photo_1_2026-08-25_05-52-56.jpg",
+  "photo_2_2026-08-25_05-52-56.jpg",
+  "photo_3_2026-08-25_05-52-56.jpg",
+  "photo_4_2026-08-25_05-52-56.jpg",
+  "photo_5_2026-08-25_05-52-57.jpg",
+  "photo_6_2026-08-25_05-52-57.jpg",
+  "photo_7_2026-08-25_05-52-57.jpg",
+  "photo_8_2026-08-25_05-52-57.jpg",
+  "photo_9_2026-08-25_05-52-57.jpg",
+  "photo_10_2026-08-25_05-52-57.jpg",
+  ...Array.from(
+    { length: 30 },
+    (_, index) => `photo_${index + 1}_2026-08-27_07-04-${index < 10 ? "19" : "20"}.jpg`,
+  ),
+];
 
 type Track = {
   id: string;
@@ -264,7 +290,7 @@ function PezhvakMusic() {
             .filter((track) => !isUnsupportedAudioSource(track.src))
             .map((track, index) => ({
               ...track,
-              cover: referenceCovers[index % referenceCovers.length],
+              cover: `/cover/uploads/${uploadedCovers[index % uploadedCovers.length]}`,
             }));
           const savedManualTracks = JSON.parse(
             window.localStorage.getItem("pezhvak-manual-tracks") ?? "[]",
