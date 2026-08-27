@@ -209,12 +209,18 @@ function PezhvakMusic() {
   const [trackDisplayLimit, setTrackDisplayLimit] = useState(8);
   const [trackDuration, setTrackDuration] = useState<number>(0);
   const [activeAudioReady, setActiveAudioReady] = useState(false);
+  const [isMobilePlayback, setIsMobilePlayback] = useState(false);
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
   const secondPreloadAudioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    const mobileQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+    const updateMobilePlayback = () => setIsMobilePlayback(mobileQuery.matches);
+    updateMobilePlayback();
+    mobileQuery.addEventListener("change", updateMobilePlayback);
 
     try {
       const savedTheme = window.localStorage.getItem("pezhvak-theme") as
@@ -230,6 +236,8 @@ function PezhvakMusic() {
     } catch {
       setRecentTrackIds([]);
     }
+
+    return () => mobileQuery.removeEventListener("change", updateMobilePlayback);
   }, []);
 
   const current = tracks[index] ?? tracks[0];
@@ -249,8 +257,8 @@ function PezhvakMusic() {
     const queuedTrack = nextTrackId ? tracks.find((track) => track.id === nextTrackId) : undefined;
     return [queuedTrack, ...upcomingTracks.filter((track) => track.id !== queuedTrack?.id)]
       .filter((track): track is Track => Boolean(track))
-      .slice(0, 2);
-  }, [current, nextTrackId, shuffle, shuffleTracks, tracks]);
+      .slice(0, isMobilePlayback ? 1 : 2);
+  }, [current, isMobilePlayback, nextTrackId, shuffle, shuffleTracks, tracks]);
   const nextTrack = preloadTracks[0];
   const isFav = current ? favorites.includes(current.id) : false;
   const duration = current
@@ -466,7 +474,13 @@ function PezhvakMusic() {
 
     preloadAudios.forEach((preloadAudio, index) => {
       const track = preloadTracks[index];
-      if (!preloadAudio || !track?.src) return;
+      if (!preloadAudio) return;
+      if (!track?.src) {
+        preloadAudio.pause();
+        preloadAudio.removeAttribute("src");
+        preloadAudio.load();
+        return;
+      }
       if (preloadAudio.getAttribute("src") !== track.src) {
         preloadAudio.src = track.src;
         preloadAudio.load();
