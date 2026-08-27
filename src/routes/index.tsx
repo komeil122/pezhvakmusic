@@ -609,9 +609,16 @@ function PezhvakMusic() {
     return q ? artists.filter((a) => a.name.toLowerCase().includes(q)) : artists;
   }, [artists, query]);
 
+  const cancelPreloading = () => {
+    [preloadAudioRef.current, secondPreloadAudioRef.current].forEach((preloadAudio) => {
+      preloadAudio?.pause();
+      preloadAudio?.removeAttribute("src");
+      preloadAudio?.load();
+    });
+  };
+
   const playAudio = (track: Track) => {
     const audio = audioRef.current;
-    const preloadAudios = [preloadAudioRef.current, secondPreloadAudioRef.current];
     if (!audio || !track.src) return;
     if (isUnsupportedAudioSource(track.src)) {
       setPlaying(false);
@@ -619,11 +626,7 @@ function PezhvakMusic() {
       return;
     }
 
-    preloadAudios.forEach((preloadAudio) => {
-      preloadAudio?.pause();
-      preloadAudio?.removeAttribute("src");
-      preloadAudio?.load();
-    });
+    cancelPreloading();
     setActiveAudioReady(false);
     if (audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
@@ -887,6 +890,7 @@ function PezhvakMusic() {
 
   const step = (dir: 1 | -1) => {
     if (tracks.length === 0) return;
+    cancelPreloading();
     setIndex((i) => {
       if (shuffle) {
         const currentShuffleIndex = shuffleTracks.findIndex((track) => track.id === tracks[i]?.id);
