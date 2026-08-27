@@ -208,6 +208,7 @@ function PezhvakMusic() {
   });
   const [trackDisplayLimit, setTrackDisplayLimit] = useState(8);
   const [trackDuration, setTrackDuration] = useState<number>(0);
+  const [activeAudioReady, setActiveAudioReady] = useState(false);
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -387,6 +388,7 @@ function PezhvakMusic() {
 
     const handleCanPlay = () => {
       if (!playing) return;
+      setActiveAudioReady(true);
       setPlaybackError(null);
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.catch === "function") {
@@ -398,6 +400,7 @@ function PezhvakMusic() {
     };
 
     const handleError = () => {
+      setActiveAudioReady(false);
       setPlaying(false);
       setPlaybackError(`Could not play ${current.title}.`);
     };
@@ -424,6 +427,7 @@ function PezhvakMusic() {
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
+      setActiveAudioReady(false);
       return;
     }
 
@@ -431,6 +435,7 @@ function PezhvakMusic() {
       audio.src = current.src;
       audio.load();
     }
+    setActiveAudioReady(false);
     setTrackDuration(0);
     setPlaybackError(null);
     setProgress(0);
@@ -438,7 +443,14 @@ function PezhvakMusic() {
 
   useEffect(() => {
     const preloadAudio = preloadAudioRef.current;
-    if (!preloadAudio || !nextTrack?.src) return;
+    const activeAudio = audioRef.current;
+    if (
+      !preloadAudio ||
+      !nextTrack?.src ||
+      !activeAudioReady ||
+      activeAudio?.getAttribute("src") !== current?.src
+    )
+      return;
 
     if (preloadAudio.getAttribute("src") !== nextTrack.src) {
       preloadAudio.src = nextTrack.src;
@@ -448,7 +460,7 @@ function PezhvakMusic() {
     return () => {
       preloadAudio.pause();
     };
-  }, [nextTrack?.id, nextTrack?.src]);
+  }, [activeAudioReady, current?.src, nextTrack?.id, nextTrack?.src]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -583,6 +595,7 @@ function PezhvakMusic() {
 
   const playAudio = (track: Track) => {
     const audio = audioRef.current;
+    const preloadAudio = preloadAudioRef.current;
     if (!audio || !track.src) return;
     if (isUnsupportedAudioSource(track.src)) {
       setPlaying(false);
@@ -590,6 +603,12 @@ function PezhvakMusic() {
       return;
     }
 
+    if (preloadAudio) {
+      preloadAudio.pause();
+      preloadAudio.removeAttribute("src");
+      preloadAudio.load();
+    }
+    setActiveAudioReady(false);
     if (audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
     }
