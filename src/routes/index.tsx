@@ -212,6 +212,7 @@ function PezhvakMusic() {
   const [durationByTrack, setDurationByTrack] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
+  const secondPreloadAudioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -236,16 +237,21 @@ function PezhvakMusic() {
     () => [...tracks].sort((first, second) => shuffleRank(first.id) - shuffleRank(second.id)),
     [tracks],
   );
-  const nextTrack = nextTrackId
-    ? tracks.find((track) => track.id === nextTrackId)
-    : tracks.length > 1
-      ? shuffle
-        ? shuffleTracks[
-            (shuffleTracks.findIndex((track) => track.id === current?.id) + 1) %
-              shuffleTracks.length
-          ]
-        : tracks[(index + 1) % tracks.length]
-      : undefined;
+  const preloadTracks = useMemo(() => {
+    if (!current || tracks.length < 2) return [];
+
+    const orderedTracks = shuffle ? shuffleTracks : tracks;
+    const currentPosition = orderedTracks.findIndex((track) => track.id === current.id);
+    const upcomingTracks = orderedTracks
+      .slice(currentPosition + 1)
+      .concat(orderedTracks.slice(0, currentPosition))
+      .filter((track) => track.id !== current.id);
+    const queuedTrack = nextTrackId ? tracks.find((track) => track.id === nextTrackId) : undefined;
+    return [queuedTrack, ...upcomingTracks.filter((track) => track.id !== queuedTrack?.id)]
+      .filter((track): track is Track => Boolean(track))
+      .slice(0, 2);
+  }, [current, nextTrackId, shuffle, shuffleTracks, tracks]);
+  const nextTrack = preloadTracks[0];
   const isFav = current ? favorites.includes(current.id) : false;
   const duration = current
     ? current.src
@@ -359,11 +365,7 @@ function PezhvakMusic() {
         void audio.play();
         return;
       }
-      const upcomingTrack = nextTrackId
-        ? tracks.find((track) => track.id === nextTrackId)
-        : tracks.length > 1
-          ? tracks[(index + 1) % tracks.length]
-          : undefined;
+      const upcomingTrack = preloadTracks[0];
       const preloadAudio = preloadAudioRef.current;
       if (upcomingTrack?.src && preloadAudio?.getAttribute("src") === upcomingTrack.src) {
         audio.src = upcomingTrack.src;
@@ -417,7 +419,17 @@ function PezhvakMusic() {
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("error", handleError);
     };
-  }, [current?.id, index, nextTrackId, playing, repeat, shuffle, shuffleTracks, tracks]);
+  }, [
+    current?.id,
+    index,
+    nextTrackId,
+    playing,
+    preloadTracks,
+    repeat,
+    shuffle,
+    shuffleTracks,
+    tracks,
+  ]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -442,25 +454,29 @@ function PezhvakMusic() {
   }, [current?.id, current?.src]);
 
   useEffect(() => {
-    const preloadAudio = preloadAudioRef.current;
+    const preloadAudios = [preloadAudioRef.current, secondPreloadAudioRef.current];
     const activeAudio = audioRef.current;
     if (
-      !preloadAudio ||
-      !nextTrack?.src ||
+      preloadAudios.every((preloadAudio) => !preloadAudio) ||
+      preloadTracks.length === 0 ||
       !activeAudioReady ||
       activeAudio?.getAttribute("src") !== current?.src
     )
       return;
 
-    if (preloadAudio.getAttribute("src") !== nextTrack.src) {
-      preloadAudio.src = nextTrack.src;
-      preloadAudio.load();
-    }
+    preloadAudios.forEach((preloadAudio, index) => {
+      const track = preloadTracks[index];
+      if (!preloadAudio || !track?.src) return;
+      if (preloadAudio.getAttribute("src") !== track.src) {
+        preloadAudio.src = track.src;
+        preloadAudio.load();
+      }
+    });
 
     return () => {
-      preloadAudio.pause();
+      preloadAudios.forEach((preloadAudio) => preloadAudio?.pause());
     };
-  }, [activeAudioReady, current?.src, nextTrack?.id, nextTrack?.src]);
+  }, [activeAudioReady, current?.src, preloadTracks]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -595,7 +611,7 @@ function PezhvakMusic() {
 
   const playAudio = (track: Track) => {
     const audio = audioRef.current;
-    const preloadAudio = preloadAudioRef.current;
+    const preloadAudios = [preloadAudioRef.current, secondPreloadAudioRef.current];
     if (!audio || !track.src) return;
     if (isUnsupportedAudioSource(track.src)) {
       setPlaying(false);
@@ -603,11 +619,11 @@ function PezhvakMusic() {
       return;
     }
 
-    if (preloadAudio) {
-      preloadAudio.pause();
-      preloadAudio.removeAttribute("src");
-      preloadAudio.load();
-    }
+    preloadAudios.forEach((preloadAudio) => {
+      preloadAudio?.pause();
+      preloadAudio?.removeAttribute("src");
+      preloadAudio?.load();
+    });
     setActiveAudioReady(false);
     if (audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
@@ -953,6 +969,7 @@ function PezhvakMusic() {
     <div className="music-shell min-h-screen overflow-x-hidden bg-background text-foreground">
       <audio ref={audioRef} preload="auto" playsInline />
       <audio ref={preloadAudioRef} preload="none" playsInline />
+      <audio ref={secondPreloadAudioRef} preload="none" playsInline />
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar transition-transform lg:translate-x-0 ${
