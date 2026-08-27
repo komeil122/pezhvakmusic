@@ -541,7 +541,6 @@ function PezhvakMusic() {
 
     if (audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
-      audio.load();
     }
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === "function") {
@@ -877,7 +876,7 @@ function PezhvakMusic() {
 
   return (
     <div className="music-shell min-h-screen overflow-x-hidden bg-background text-foreground">
-      <audio ref={audioRef} preload="metadata" playsInline />
+      <audio ref={audioRef} preload="auto" playsInline />
       <audio ref={preloadAudioRef} preload="none" playsInline />
       {/* Sidebar */}
       <aside
