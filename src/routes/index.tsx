@@ -1495,7 +1495,8 @@ function PezhvakMusic() {
                           {track.title}
                         </span>
                         <span className="block truncate text-xs text-muted-foreground">
-                          {track.artist} · {track.album}
+                          {track.artist}
+                          {track.album ? ` · ${track.album}` : ""}
                         </span>
                       </span>
                       <span className="text-xs text-muted-foreground">
@@ -1546,7 +1547,8 @@ function PezhvakMusic() {
                         <button onClick={() => selectTrack(t)} className="block w-full text-center">
                           <p className="truncate text-sm">{t.title}</p>
                           <p className="truncate text-xs text-muted-foreground">
-                            {t.artist} · {t.album}
+                            {t.artist}
+                            {t.album ? ` · ${t.album}` : ""}
                           </p>
                         </button>
                         <div className="mt-3 flex items-center justify-center gap-1">
