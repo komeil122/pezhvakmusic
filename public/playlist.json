@@ -1502,5 +1502,29 @@
     "album": "Something Dead Missing Ones",
     "cover": "/cover/reference-cover-01.jpg",
     "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/something%20dead%20missing%20ones/Mina.m4a"
+  },
+  {
+    "id": "ambient-dark-jazz-noir",
+    "title": "Dark Jazz Noir",
+    "artist": "Ambient Music",
+    "album": "Ambient Music",
+    "cover": "/cover/reference-cover-02.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/ambient%20sounds/Dark%20Jazz%20Noir%20for%20Deep%20Focus,%20Work%20%20Night%20Study.m4a"
+  },
+  {
+    "id": "ambient-one-more-drink",
+    "title": "One More Drink",
+    "artist": "Ambient Music",
+    "album": "Ambient Music",
+    "cover": "/cover/reference-cover-03.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/ambient%20sounds/One%20More%20Drink,%20Master%20Bruce%20%20Late%20Night%20Noir%20Jazz.m4a"
+  },
+  {
+    "id": "ambient-city-is-quiet-tonight",
+    "title": "The City Is Quiet Tonight",
+    "artist": "Ambient Music",
+    "album": "Ambient Music",
+    "cover": "/cover/reference-cover-04.jpg",
+    "src": "https://isqbdlawmaudhimeobuj.supabase.co/storage/v1/object/public/pezhvak%20music/ambient%20sounds/The%20City%20Is%20Quiet%20Tonight,%20Sir%20%20Batman%20Dark%20Jazz%20N.m4a"
   }
 ]

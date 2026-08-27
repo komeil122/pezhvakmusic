@@ -93,7 +93,7 @@ const basePlaylists: PlaylistCard[] = [
     cover: referenceCovers[1],
     icon: ListMusic,
     count: 0,
-    trackIds: [],
+    trackIds: ["ambient-dark-jazz-noir", "ambient-one-more-drink", "ambient-city-is-quiet-tonight"],
   },
 ];
 
