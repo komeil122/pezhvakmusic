@@ -650,6 +650,21 @@ html[data-theme="silver"] {
       linear-gradient(135deg, color-mix(in oklab, var(--primary) 10%, var(--card)), var(--card) 62%);
   }
 
+    .hero-now-playing {
+      animation: pezhvak-hero-pulse 520ms ease-out both;
+    }
+
+    @keyframes pezhvak-hero-pulse {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
   .dashboard-hero::after {
     position: absolute;
     inset: auto -8% -46% 45%;

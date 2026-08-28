@@ -1461,7 +1461,11 @@ function PezhvakMusic() {
             <div className="flex min-w-0 items-center gap-3">
               <AudioLines className="shrink-0 text-primary" size={26} />
               <div className="min-w-0">
-                <h1 className="truncate text-2xl font-semibold">Welcome back, Pezhvak</h1>
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary">
+                  <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+                  V1.10 / 2026 Edition
+                </div>
+                <h1 className="mt-1 truncate text-2xl font-semibold">Welcome back, Pezhvak</h1>
                 <p className="text-sm text-muted-foreground">
                   Here's what's playing in your world.
                 </p>
@@ -1491,8 +1495,8 @@ function PezhvakMusic() {
           </section>
 
           <section className="dashboard-hero overflow-hidden rounded-2xl border border-primary/20 bg-card p-5 shadow-sm md:p-6">
-            <div className="relative z-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-              <div>
+            <div className="relative z-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+              <div className="min-w-0">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary">
                   <Sparkles size={14} /> Your listening space
                 </div>
@@ -1502,6 +1506,34 @@ function PezhvakMusic() {
                 <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
                   Your library, your pace, and a queue that stays ready whenever you are.
                 </p>
+                <div className="hero-now-playing mt-6 flex items-center gap-3 rounded-xl border border-border/70 bg-background/40 p-3 backdrop-blur-sm">
+                  <img
+                    src={current.cover}
+                    alt=""
+                    className="size-12 shrink-0 rounded-lg object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-primary">
+                      {playing ? "Live session" : "Ready when you are"}
+                    </p>
+                    <p className="truncate text-sm font-medium text-foreground">{current.title}</p>
+                    <p className="truncate text-xs text-muted-foreground">{current.artist}</p>
+                    <div className="mt-2 h-1 overflow-hidden rounded-full bg-secondary">
+                      <div
+                        className="h-full rounded-full bg-primary transition-[width] duration-300"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={togglePlayback}
+                    aria-label={playing ? "Pause current song" : "Play current song"}
+                    title={playing ? "Pause" : "Play"}
+                    className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
+                  >
+                    {playing ? <Pause size={16} /> : <Play size={16} />}
+                  </button>
+                </div>
               </div>
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <ListeningStat
