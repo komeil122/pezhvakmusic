@@ -689,6 +689,15 @@ html[data-theme="silver"] {
     will-change: transform, opacity;
   }
 
+  .mobile-sidebar {
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .mobile-sidebar-overlay {
+    animation: pezhvak-backdrop-in 240ms ease-out both;
+  }
+
   .add-music-panel {
     transform: translate(-50%, -50%);
     translate: 0 0;

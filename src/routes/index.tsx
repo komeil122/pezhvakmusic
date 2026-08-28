@@ -368,16 +368,11 @@ function PezhvakMusic() {
     };
 
     const handleEnded = () => {
+      if (audio.getAttribute("src") !== current.src || !audio.ended) return;
       if (repeat) {
         audio.currentTime = 0;
         void audio.play();
         return;
-      }
-      const upcomingTrack = preloadTracks[0];
-      const preloadAudio = preloadAudioRef.current;
-      if (upcomingTrack?.src && preloadAudio?.getAttribute("src") === upcomingTrack.src) {
-        audio.src = upcomingTrack.src;
-        audio.load();
       }
       setIndex((i) => {
         const queuedIndex = nextTrackId
@@ -429,6 +424,7 @@ function PezhvakMusic() {
     };
   }, [
     current?.id,
+    current?.src,
     index,
     nextTrackId,
     playing,
@@ -990,7 +986,7 @@ function PezhvakMusic() {
       <audio ref={secondPreloadAudioRef} preload="none" playsInline />
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar transition-transform lg:translate-x-0 ${
+        className={`mobile-sidebar fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-sidebar lg:translate-x-0 ${
           navOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -1078,7 +1074,7 @@ function PezhvakMusic() {
       {navOpen && (
         <button
           aria-label="Close navigation overlay"
-          className="fixed inset-0 z-30 bg-background/70 lg:hidden"
+          className="mobile-sidebar-overlay fixed inset-0 z-30 bg-background/70 lg:hidden"
           onClick={() => setNavOpen(false)}
         />
       )}
