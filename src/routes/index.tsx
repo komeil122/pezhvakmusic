@@ -392,8 +392,8 @@ function PezhvakMusic() {
     };
 
     const handleCanPlay = () => {
-      if (!playing) return;
       setActiveAudioReady(true);
+      if (!playing) return;
       setPlaybackError(null);
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.catch === "function") {
@@ -640,6 +640,7 @@ function PezhvakMusic() {
     setActiveAudioReady(false);
     if (audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
+      audio.load();
     }
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === "function") {
@@ -1463,7 +1464,7 @@ function PezhvakMusic() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary">
                   <span className="size-1.5 animate-pulse rounded-full bg-primary" />
-                  V1.10 / 2026 Edition
+                  V1.10
                 </div>
                 <h1 className="mt-1 truncate text-2xl font-semibold">Welcome back, Pezhvak</h1>
                 <p className="text-sm text-muted-foreground">
