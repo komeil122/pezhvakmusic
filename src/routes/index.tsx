@@ -1468,7 +1468,7 @@ function PezhvakMusic() {
                 </div>
                 <h1 className="mt-1 truncate text-2xl font-semibold">Welcome back, Pezhvak</h1>
                 <p className="text-sm text-muted-foreground">
-                  Here's what's playing in your world.
+                  Here's what is playing in your world.
                 </p>
               </div>
             </div>
@@ -1502,7 +1502,7 @@ function PezhvakMusic() {
                   <Sparkles size={14} /> Your listening space
                 </div>
                 <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-tight md:text-4xl">
-                  Find the sound that fix this moment.
+                  Find the sound that fits this moment.
                 </h2>
                 <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
                   Your library, your pace, and a queue that stays ready whenever you are.
