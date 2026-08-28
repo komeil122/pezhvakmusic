@@ -197,7 +197,7 @@ function PezhvakMusic() {
   const [musicMessage, setMusicMessage] = useState("");
   const [downloadingTrackId, setDownloadingTrackId] = useState<string | null>(null);
   const [settingsPosition, setSettingsPosition] = useState({ top: 80, left: 820 });
-  const [theme, setTheme] = useState<(typeof themeOptions)[number]["id"]>("obsidian");
+  const [theme, setTheme] = useState<(typeof themeOptions)[number]["id"]>("purple");
   const [playlists, setPlaylists] = useState<PlaylistCard[]>(basePlaylists);
   const [openPlaylistId, setOpenPlaylistId] = useState<string | null>(null);
   const [openArtistName, setOpenArtistName] = useState<string | null>(null);
